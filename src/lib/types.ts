@@ -1,3 +1,5 @@
+import { Dispatch, SetStateAction } from "react";
+
 export interface User {
   userId: string;
   name: string;
@@ -143,4 +145,29 @@ export interface SlideContent {
   title: string;
   subtitle: string;
   imageSrc: string;
+}
+
+export interface GlobalContextType {
+  user: User | null;
+  setUser: Dispatch<SetStateAction<User | null>>;
+  cart: CartItem[];
+  setCart: Dispatch<SetStateAction<CartItem[]>>;
+  products: Product[];
+  setProducts: Dispatch<SetStateAction<Product[]>>;
+  categories: Category[];
+  setCategories: Dispatch<SetStateAction<Category[]>>;
+  brands: Brand[];
+  setBrands: Dispatch<SetStateAction<Brand[]>>;
+  orders: Order[];
+  setOrders: Dispatch<SetStateAction<Order[]>>;
+  reviews: Review[];
+  setReviews: Dispatch<SetStateAction<Review[]>>;
+  wishlist: Wishlist | null;
+  setWishlist: Dispatch<SetStateAction<Wishlist | null>>;
+  coupons: Coupon[];
+  setCoupons: Dispatch<SetStateAction<Coupon[]>>;
+  isLoading: boolean;
+  setIsLoading: Dispatch<SetStateAction<boolean>>;
+  slideContents: SlideContent[];
+  setSlideContents: Dispatch<SetStateAction<SlideContent[]>>;
 }

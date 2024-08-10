@@ -28,18 +28,31 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useTheme } from "next-themes";
+import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
+import { useState, useEffect } from "react";
 
 const NavDropDownMenu = () => {
   const { user } = useGlobalData();
   const { theme, setTheme } = useTheme();
+  const router = useRouter();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    setIsLoggedIn(!!Cookies.get("loginToken"));
+  }, []);
+
+  const handleLogoutClick = () => {
+    Cookies.remove("loginToken");
+    setIsLoggedIn(false);
+    router.push("/login");
+  };
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Avatar>
-          <AvatarImage
-            src={user?.profileImage || "https://github.com/shadcn.png"}
-          />
+          <AvatarImage src={user?.profileImage || "/favicon.svg"} />
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
@@ -47,12 +60,14 @@ const NavDropDownMenu = () => {
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <Link href="/profile">
-            <DropdownMenuItem>
-              <User className="mr-2 h-4 w-4" />
-              <span>Profile</span>
-            </DropdownMenuItem>
-          </Link>
+          {isLoggedIn && (
+            <Link href="/profile">
+              <DropdownMenuItem>
+                <User className="mr-2 h-4 w-4" />
+                <span>Profile</span>
+              </DropdownMenuItem>
+            </Link>
+          )}
           <Link href="/subscription">
             <DropdownMenuItem>
               <CreditCard className="mr-2 h-4 w-4" />
@@ -94,12 +109,14 @@ const NavDropDownMenu = () => {
         </Link>
         <DropdownMenuSeparator />
         <DropdownMenuGroup className="md:hidden">
-          <Link href="/login">
-            <DropdownMenuItem>
-              <LogIn className="mr-2 h-4 w-4" />
-              <span>Login</span>
-            </DropdownMenuItem>
-          </Link>
+          {!isLoggedIn && (
+            <Link href="/login">
+              <DropdownMenuItem>
+                <LogIn className="mr-2 h-4 w-4" />
+                <span>Login</span>
+              </DropdownMenuItem>
+            </Link>
+          )}
           <Link href="/cart">
             <DropdownMenuItem>
               <ShoppingCart className="mr-2 h-4 w-4" />
@@ -108,10 +125,12 @@ const NavDropDownMenu = () => {
           </Link>
         </DropdownMenuGroup>
         <DropdownMenuSeparator className="md:hidden" />
-        <DropdownMenuItem disabled>
-          <LogOut className="mr-2 h-4 w-4" />
-          <span>Log out</span>
-        </DropdownMenuItem>
+        {isLoggedIn && (
+          <DropdownMenuItem onClick={handleLogoutClick}>
+            <LogOut className="mr-2 h-4 w-4" />
+            <span>Log out</span>
+          </DropdownMenuItem>
+        )}
       </DropdownMenuContent>
     </DropdownMenu>
   );

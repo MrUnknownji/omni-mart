@@ -25,7 +25,7 @@ const NavBar = ({
           <div className="flex items-center flex-1">
             <Link href="/">
               <Avatar>
-                <AvatarImage src="https://github.com/shadcn.png" />
+                <AvatarImage src="/favicon.svg" />
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
             </Link>

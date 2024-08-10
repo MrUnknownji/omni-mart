@@ -26,10 +26,10 @@ export default function ProductCard({ product, className }: ProductCardProps) {
   const { toast } = useToast();
 
   const addToCart = () => {
-    cart.find((item) => item.cartItemId === product.productId)
+    cart.find((item) => item.productId === product.productId)
       ? setCart((prevData) =>
           prevData.map((item) =>
-            item.cartItemId === product.productId
+            item.productId === product.productId
               ? { ...item, quantity: item.quantity + 1 }
               : item
           )
@@ -45,9 +45,9 @@ export default function ProductCard({ product, className }: ProductCardProps) {
         ]);
 
     toast({
-      title: cart.find((item) => item.cartItemId === product.productId)
+      title: cart.find((item) => item.productId === product.productId)
         ? `Item's quantity is now ${
-            (cart.find((item) => item.cartItemId === product.productId)
+            (cart.find((item) => item.productId === product.productId)
               ?.quantity ?? 0) + 1
           }`
         : `Item added to cart`,
