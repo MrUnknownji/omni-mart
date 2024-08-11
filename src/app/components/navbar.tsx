@@ -1,11 +1,12 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { LogIn, ShoppingCart } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import NavDropDownMenu from "./nav-dropdown-menu";
+import Cookies from "js-cookie";
 
 interface NavBarProps {
   isSearch?: boolean;
@@ -18,6 +19,12 @@ const NavBar = ({
   searchTerm = "",
   setSearchTerm = () => {},
 }: NavBarProps) => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    setIsLoggedIn(!!Cookies.get("loginToken"));
+  }, []);
+
   return (
     <nav className="sticky top-0 left-0 w-full bg-background/50 backdrop-blur-3xl border border-border z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -35,6 +42,7 @@ const NavBar = ({
               <div className="flex w-full max-w-sm items-center space-x-2">
                 <Input
                   type="search"
+                  className="border-foreground"
                   placeholder="Search"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
@@ -45,18 +53,22 @@ const NavBar = ({
           </div>
           <div className=" items-center space-x-8 flex flex-1 justify-end">
             <div className="hidden items-center space-x-8 md:flex">
-              <Link href="/login">
-                <Button variant="default" className="gap-2">
-                  <LogIn className="h-4 w-4" />
-                  Login
-                </Button>
-              </Link>
-              <Link
-                href="/cart"
-                className="text-foreground hover:text-muted-foreground"
-              >
-                <ShoppingCart />
-              </Link>
+              {!isLoggedIn && (
+                <Link href="/login">
+                  <Button variant="default" className="gap-2">
+                    <LogIn className="h-4 w-4" />
+                    Login
+                  </Button>
+                </Link>
+              )}
+              {isLoggedIn && (
+                <Link
+                  href="/cart"
+                  className="text-foreground hover:text-muted-foreground"
+                >
+                  <ShoppingCart />
+                </Link>
+              )}
             </div>
             <NavDropDownMenu />
           </div>

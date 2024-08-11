@@ -12,19 +12,24 @@ const CarouselSlide: React.FC<SlideContent> = ({
   title,
   subtitle,
 }) => (
-  <div className="swiper-slide">
+  <div className="swiper-slide relative">
     <Image
       className="w-full h-full object-cover object-center"
       src={imageSrc}
       alt={title}
-      width={500}
-      height={500}
+      layout="fill"
     />
-    <div className="w-full h-full absolute top-0 left-0 bg-background/25 dark:bg-background/50 flex flex-col justify-center items-start gap-2 pl-8">
-      <h1 className="font-bold text-5xl" data-swiper-parallax="-500">
+    <div className="absolute inset-0 bg-background/25 dark:bg-background/50 flex flex-col justify-center items-start p-4 sm:p-6 md:p-8 lg:p-12">
+      <h1
+        className="font-bold text-2xl sm:text-3xl md:text-4xl lg:text-5xl mb-2 sm:mb-3 md:mb-4"
+        data-swiper-parallax="-500"
+      >
         {title}
       </h1>
-      <h2 className="text-2xl" data-swiper-parallax="-200">
+      <h2
+        className="text-lg sm:text-xl md:text-2xl lg:text-3xl"
+        data-swiper-parallax="-200"
+      >
         {subtitle}
       </h2>
     </div>
@@ -34,7 +39,7 @@ const CarouselSlide: React.FC<SlideContent> = ({
 export default function Carousel() {
   const { slideContents } = useGlobalData();
   return (
-    <div className="flex items-center h-[80vh] w-[90%] rounded-3xl m-auto mt-[5vh] justify-center overflow-hidden">
+    <div className="w-full h-[40vh] sm:h-[50vh] md:h-[60vh] lg:h-[70vh] xl:h-[80vh] mt-4 sm:mt-6 md:mt-8 overflow-hidden rounded-lg sm:rounded-xl md:rounded-2xl lg:rounded-3xl">
       <Swiper
         modules={[Autoplay, Parallax]}
         centeredSlides={true}
@@ -43,6 +48,7 @@ export default function Carousel() {
         parallax={true}
         loop={true}
         allowTouchMove={false}
+        className="w-full h-full"
       >
         {slideContents.map((slideContent, index) => (
           <SwiperSlide key={index}>

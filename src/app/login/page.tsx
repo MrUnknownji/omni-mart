@@ -13,6 +13,7 @@ import { Label } from "@/components/ui/label";
 import { FormEvent, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -57,6 +58,14 @@ export default function Login() {
 
   return (
     <div className="w-screen h-screen flex items-center justify-center">
+      <div className="absolute top-4 left-4 flex items-center justify-center">
+        <Link href="/">
+          <Avatar>
+            <AvatarImage src="/favicon.svg" />
+            <AvatarFallback>CN</AvatarFallback>
+          </Avatar>
+        </Link>
+      </div>
       <Card className="mx-auto max-w-sm">
         <CardHeader>
           <CardTitle className="text-2xl">Login</CardTitle>

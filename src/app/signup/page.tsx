@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const SignUp = () => {
   const [firstName, setFirstName] = useState("");
@@ -60,6 +61,14 @@ const SignUp = () => {
 
   return (
     <div className="flex flex-col items-center justify-center h-screen">
+      <div className="absolute top-4 left-4 flex items-center justify-center">
+        <Link href="/">
+          <Avatar>
+            <AvatarImage src="/favicon.svg" />
+            <AvatarFallback>CN</AvatarFallback>
+          </Avatar>
+        </Link>
+      </div>
       <Card className="mx-auto max-w-sm">
         <CardHeader>
           <CardTitle className="text-xl">Sign Up</CardTitle>
