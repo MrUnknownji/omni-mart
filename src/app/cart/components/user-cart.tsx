@@ -28,10 +28,10 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import Link from "next/link";
 import { useGlobalData } from "@/app/Context/GlobalData";
 import { useEffect, useState } from "react";
 import { CartItem } from "@/lib/types";
+import { useRouter } from "next/navigation";
 
 export function UserCart({ searchTerm }: { searchTerm: string }) {
   const { cart, setCart, user } = useGlobalData();
@@ -39,6 +39,8 @@ export function UserCart({ searchTerm }: { searchTerm: string }) {
   const [sortBy, setSortBy] = useState("name");
   const [activeTab, setActiveTab] = useState("all");
   const [filteredCartItems, setFilteredCartItems] = useState(cartItems);
+
+  const router = useRouter();
 
   const handleQuantityChange = (index: number, change: number) => {
     const updatedCart = cartItems.map((item, i) =>
@@ -348,15 +350,14 @@ export function UserCart({ searchTerm }: { searchTerm: string }) {
                 </div>
                 <Separator className="my-4" />
                 <div className="grid gap-3">
-                  <Link href="/checkout">
-                    <Button
-                      size="sm"
-                      variant="default"
-                      className="w-full text-sm"
-                    >
-                      Checkout
-                    </Button>
-                  </Link>
+                  <Button
+                    size="sm"
+                    variant="default"
+                    className="w-full text-sm"
+                    onClick={() => router.push("/checkout")}
+                  >
+                    Checkout
+                  </Button>
                 </div>
               </CardContent>
             </Card>

@@ -21,11 +21,7 @@ export function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;
   const token = request.cookies.get("loginToken")?.value;
 
-  console.log(`Middleware triggered for path: ${path}`);
-  console.log(`Token exists: ${!!token}`);
-
   if (authRoutes.includes(path)) {
-    console.log("Auth route detected");
     if (token) {
       return NextResponse.redirect(new URL("/", request.url));
     }

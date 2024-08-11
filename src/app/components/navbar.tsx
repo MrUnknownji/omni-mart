@@ -4,9 +4,9 @@ import { LogIn, ShoppingCart } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import Link from "next/link";
 import NavDropDownMenu from "./nav-dropdown-menu";
 import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
 
 interface NavBarProps {
   isSearch?: boolean;
@@ -21,6 +21,8 @@ const NavBar = ({
 }: NavBarProps) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  const router = useRouter();
+
   useEffect(() => {
     setIsLoggedIn(!!Cookies.get("loginToken"));
   }, []);
@@ -30,12 +32,10 @@ const NavBar = ({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center flex-1">
-            <Link href="/">
-              <Avatar>
-                <AvatarImage src="/favicon.svg" />
-                <AvatarFallback>CN</AvatarFallback>
-              </Avatar>
-            </Link>
+            <Avatar onClick={() => router.push("/")}>
+              <AvatarImage src="/favicon.svg" />
+              <AvatarFallback>CN</AvatarFallback>
+            </Avatar>
           </div>
           <div className="hidden md:flex items-center space-x-4 flex-1">
             {isSearch && (
@@ -54,20 +54,19 @@ const NavBar = ({
           <div className=" items-center space-x-8 flex flex-1 justify-end">
             <div className="hidden items-center space-x-8 md:flex">
               {!isLoggedIn && (
-                <Link href="/login">
-                  <Button variant="default" className="gap-2">
-                    <LogIn className="h-4 w-4" />
-                    Login
-                  </Button>
-                </Link>
+                <Button
+                  variant="default"
+                  className="gap-2"
+                  onClick={() => router.push("/login")}
+                >
+                  <LogIn className="h-4 w-4" />
+                  Login
+                </Button>
               )}
               {isLoggedIn && (
-                <Link
-                  href="/cart"
-                  className="text-foreground hover:text-muted-foreground"
-                >
+                <Button variant={"ghost"} onClick={() => router.push("/cart")}>
                   <ShoppingCart />
-                </Link>
+                </Button>
               )}
             </div>
             <NavDropDownMenu />
