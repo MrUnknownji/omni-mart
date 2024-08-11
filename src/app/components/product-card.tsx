@@ -15,6 +15,7 @@ import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
 import Link from "next/link";
 import { Product } from "@/lib/types";
+import { useRouter } from "next/navigation";
 
 interface ProductCardProps {
   product: Product;
@@ -24,6 +25,7 @@ interface ProductCardProps {
 export default function ProductCard({ product, className }: ProductCardProps) {
   const { cart, setCart } = useGlobalData();
   const { toast } = useToast();
+  const router = useRouter();
 
   const addToCart = () => {
     cart.find((item) => item.productId === product.productId)
@@ -57,7 +59,7 @@ export default function ProductCard({ product, className }: ProductCardProps) {
           altText="View Cart"
           onClick={() => console.log("View Cart")}
         >
-          <Link href="/cart">View Cart</Link>
+          <Button onClick={() => router.push("/cart")}>View Cart</Button>
         </ToastAction>
       ),
     });

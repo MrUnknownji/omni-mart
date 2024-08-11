@@ -51,12 +51,14 @@ export default function OrderDetailPage({
   return (
     <div className="min-h-screen bg-muted/40 p-4 sm:p-6 lg:p-8">
       <div className="mx-auto max-w-4xl">
-        <Link href="/orders">
-          <Button variant="ghost" className="mb-6">
-            <ChevronLeft className="mr-2 h-4 w-4" />
-            Back to Orders
-          </Button>
-        </Link>
+        <Button
+          variant="ghost"
+          className="mb-6"
+          onClick={() => router.push("/orders")}
+        >
+          <ChevronLeft className="mr-2 h-4 w-4" />
+          Back to Orders
+        </Button>
         <Card>
           <CardHeader>
             <div className="flex items-center justify-between">

@@ -25,11 +25,13 @@ import Footer from "../components/footer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useGlobalData } from "../Context/GlobalData";
 import { OrderStatus } from "@/lib/types";
+import { useRouter } from "next/navigation";
 
 export default function AllOrdersPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const { orders } = useGlobalData();
+  const router = useRouter();
 
   const filteredOrders = orders.filter(
     (order) =>
@@ -104,11 +106,15 @@ export default function AllOrdersPage() {
                         </Badge>
                       </TableCell>
                       <TableCell className="text-right">
-                        <Button variant="ghost" size="sm" asChild>
-                          <Link href={`/orders/${order.orderId}`}>
-                            <Package className="mr-2 h-4 w-4" />
-                            View
-                          </Link>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() =>
+                            router.push(`/orders/${order.orderId}`)
+                          }
+                        >
+                          <Package className="mr-2 h-4 w-4" />
+                          View
                         </Button>
                       </TableCell>
                     </TableRow>

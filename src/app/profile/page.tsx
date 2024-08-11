@@ -19,12 +19,14 @@ import NavBar from "../components/navbar";
 import Link from "next/link";
 import { useGlobalData } from "../Context/GlobalData";
 import { User as UserType } from "@/lib/types";
+import { useRouter } from "next/navigation";
 
 export default function ProfilePage() {
   const [isEditing, setIsEditing] = useState(false);
   const { user } = useGlobalData();
   const [profileData, setProfileData] = useState<UserType>();
   const { orders } = useGlobalData();
+  const router = useRouter();
 
   useEffect(() => {
     user != null
@@ -174,14 +176,16 @@ export default function ProfilePage() {
                             <Package className="h-4 w-4" />
                             <span>Order #{order.orderId}</span>
                           </div>
-                          <Link
-                            key={order.orderId}
-                            href={`/orders/${order.orderId}`}
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            asChild
+                            onClick={() =>
+                              router.push(`/orders/${order.orderId}`)
+                            }
                           >
-                            <Button variant="outline" size="sm">
-                              View Details
-                            </Button>
-                          </Link>
+                            View Details
+                          </Button>
                         </div>
                         <Separator />
                       </>
@@ -189,11 +193,13 @@ export default function ProfilePage() {
                   </div>
                 </CardContent>
                 <CardFooter>
-                  <Link href="/orders">
-                    <Button variant="outline" className="w-full">
-                      View All Orders
-                    </Button>
-                  </Link>
+                  <Button
+                    variant="outline"
+                    className="w-full"
+                    onClick={() => router.push("/orders")}
+                  >
+                    View All Orders
+                  </Button>
                 </CardFooter>
               </Card>
             </TabsContent>

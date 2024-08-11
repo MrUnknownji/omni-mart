@@ -15,18 +15,22 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const Checkout = () => {
   const [paymentMethod, setPaymentMethod] = useState("credit-card");
+  const router = useRouter();
   return (
     <div className="min-h-screen bg-muted/40 p-4 sm:p-6 lg:p-8">
       <div className="mx-auto max-w-4xl">
-        <Link href="/cart">
-          <Button variant="ghost" className="mb-6">
-            <ChevronLeft className="mr-2 h-4 w-4" />
-            Back to Cart
-          </Button>
-        </Link>
+        <Button
+          variant="ghost"
+          className="mb-6"
+          onClick={() => router.push("/cart")}
+        >
+          <ChevronLeft className="mr-2 h-4 w-4" />
+          Back to Cart
+        </Button>
         <div className="grid gap-6 lg:grid-cols-2">
           <Card>
             <CardHeader>
