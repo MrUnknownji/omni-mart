@@ -12,7 +12,6 @@ import {
   Check,
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import Link from "next/link";
 import { useGlobalData } from "../Context/GlobalData";
 import {
   DropdownMenu,
@@ -60,20 +59,17 @@ const NavDropDownMenu = () => {
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          {isLoggedIn && (
-            <Link href="/profile">
-              <DropdownMenuItem>
-                <User className="mr-2 h-4 w-4" />
-                <span>Profile</span>
-              </DropdownMenuItem>
-            </Link>
-          )}
-          <Link href="/subscription">
-            <DropdownMenuItem>
-              <CreditCard className="mr-2 h-4 w-4" />
-              <span>Subscription</span>
-            </DropdownMenuItem>
-          </Link>
+          <DropdownMenuItem
+            disabled={!isLoggedIn}
+            onClick={() => router.push("/profile")}
+          >
+            <User className="mr-2 h-4 w-4" />
+            <span>Profile</span>
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => router.push("/subscription")}>
+            <CreditCard className="mr-2 h-4 w-4" />
+            <span>Subscription</span>
+          </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuSub>
             <DropdownMenuSubTrigger>
@@ -101,36 +97,31 @@ const NavDropDownMenu = () => {
             </DropdownMenuPortal>
           </DropdownMenuSub>
         </DropdownMenuGroup>
-        <Link href="/support">
-          <DropdownMenuItem>
-            <LifeBuoy className="mr-2 h-4 w-4" />
-            <span>Support</span>
-          </DropdownMenuItem>
-        </Link>
+        <DropdownMenuItem onClick={() => router.push("/support")}>
+          <LifeBuoy className="mr-2 h-4 w-4" />
+          <span>Support</span>
+        </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuGroup className="md:hidden">
           {!isLoggedIn && (
-            <Link href="/login">
-              <DropdownMenuItem>
-                <LogIn className="mr-2 h-4 w-4" />
-                <span>Login</span>
-              </DropdownMenuItem>
-            </Link>
-          )}
-          <Link href="/cart">
-            <DropdownMenuItem>
-              <ShoppingCart className="mr-2 h-4 w-4" />
-              <span>Cart</span>
+            <DropdownMenuItem onClick={() => router.push("/login")}>
+              <LogIn className="mr-2 h-4 w-4" />
+              <span>Login</span>
             </DropdownMenuItem>
-          </Link>
+          )}
+          <DropdownMenuItem
+            disabled={!isLoggedIn}
+            onClick={() => router.push("/cart")}
+          >
+            <ShoppingCart className="mr-2 h-4 w-4" />
+            <span>Cart</span>
+          </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator className="md:hidden" />
-        {isLoggedIn && (
-          <DropdownMenuItem onClick={handleLogoutClick}>
-            <LogOut className="mr-2 h-4 w-4" />
-            <span>Log out</span>
-          </DropdownMenuItem>
-        )}
+        <DropdownMenuItem onClick={handleLogoutClick} disabled={!isLoggedIn}>
+          <LogOut className="mr-2 h-4 w-4" />
+          <span>Log out</span>
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

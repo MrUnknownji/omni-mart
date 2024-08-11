@@ -1,31 +1,47 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
+const publicRoutes = [
+  "/",
+  "/products/[productId]",
+  "/subscription",
+  "/support",
+];
+const authRoutes = ["/login", "/signup"];
+const protectedRoutes = [
+  "/profile",
+  "/cart",
+  "/checkout",
+  "/wishlist",
+  "/orders",
+  "/orders/[orderId]",
+];
+
 export function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;
-  const publicPaths = [
-    "/",
-    "/login",
-    "/signup",
-    "/product/[productId]",
-    "/subscription",
-    "/support",
-  ];
-  const isPublicPath = publicPaths.some((pp) =>
-    pp.includes("[")
-      ? new RegExp("^" + pp.replace("[", "").replace("]", "") + "$").test(path)
-      : pp === path
-  );
   const token = request.cookies.get("loginToken")?.value;
 
-  if (!isPublicPath && !token) {
-    return NextResponse.redirect(new URL("/login", request.url));
+  console.log(`Middleware triggered for path: ${path}`);
+  console.log(`Token exists: ${!!token}`);
+
+  if (authRoutes.includes(path)) {
+    console.log("Auth route detected");
+    if (token) {
+      return NextResponse.redirect(new URL("/", request.url));
+    }
+    return NextResponse.next();
   }
 
-  if ((path === "/login" || path === "/signup") && token) {
-    return NextResponse.redirect(new URL("/", request.url));
+  if (protectedRoutes.some((route) => path.startsWith(route))) {
+    if (!token) {
+      return NextResponse.redirect(new URL("/login", request.url));
+    }
+    return NextResponse.next();
   }
 
+  if (publicRoutes.some((route) => path.startsWith(route))) {
+    return NextResponse.next();
+  }
   return NextResponse.next();
 }
 
