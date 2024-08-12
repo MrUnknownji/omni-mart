@@ -43,7 +43,7 @@ export default function EnhancedProductDetail({
 }) {
   const router = useRouter();
   const { toast } = useToast();
-  const { products, setCart, reviews } = useGlobalData();
+  const { products, setCart, reviews, isLoggedIn } = useGlobalData();
   const [quantity, setQuantity] = useState(1);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [userRating, setUserRating] = useState(0);
@@ -113,8 +113,12 @@ export default function EnhancedProductDetail({
   };
 
   const handleBuyNow = () => {
-    handleAddToCart();
-    router.push("/checkout");
+    if (isLoggedIn) {
+      handleAddToCart();
+      router.push("/checkout");
+      return;
+    }
+    router.push("/login");
   };
 
   const handleSubmitReview = () => {
@@ -235,7 +239,11 @@ export default function EnhancedProductDetail({
                     </Button>
                   </div>
                   <div className="flex gap-4">
-                    <Button className="flex-1" onClick={handleAddToCart}>
+                    <Button
+                      className="flex-1"
+                      disabled={!isLoggedIn}
+                      onClick={handleAddToCart}
+                    >
                       <ShoppingCart className="mr-2 h-4 w-4" />
                       Add to Cart
                     </Button>

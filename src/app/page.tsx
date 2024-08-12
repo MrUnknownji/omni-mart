@@ -23,7 +23,7 @@ export default function Home() {
       <main className="flex-grow w-full px-4 sm:px-6 lg:px-8">
         <Carousel />
         <h2 className="font-semibold mt-8 mb-6 text-2xl sm:text-3xl lg:text-4xl">
-          Welcome, {user?.name}
+          Welcome, {user.firstName + " " + user?.lastName}
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
           {filteredProducts.map((product) => (

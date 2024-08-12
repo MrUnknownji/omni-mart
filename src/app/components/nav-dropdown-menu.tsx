@@ -29,17 +29,11 @@ import {
 import { useTheme } from "next-themes";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
-import { useState, useEffect } from "react";
 
 const NavDropDownMenu = () => {
-  const { user } = useGlobalData();
+  const { user, isLoggedIn, setIsLoggedIn } = useGlobalData();
   const { theme, setTheme } = useTheme();
   const router = useRouter();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  useEffect(() => {
-    setIsLoggedIn(!!Cookies.get("loginToken"));
-  }, []);
 
   const handleLogoutClick = () => {
     Cookies.remove("loginToken");
@@ -50,7 +44,7 @@ const NavDropDownMenu = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Avatar>
+        <Avatar className="cursor-pointer">
           <AvatarImage src={user?.profileImage || "/favicon.svg"} />
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>

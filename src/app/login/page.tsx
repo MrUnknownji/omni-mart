@@ -14,12 +14,16 @@ import { FormEvent, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useGlobalData } from "../Context/GlobalData";
+import useApi from "../API/useApi";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const router = useRouter();
+  const { setIsLoggedIn } = useGlobalData();
+  const { request, loading, error } = useApi();
 
   useEffect(() => {
     const token = Cookies.get("loginToken");
@@ -39,7 +43,7 @@ export default function Login() {
 
     if (!password.trim()) {
       newErrors.password = "Password is required";
-    } else if (password.length < 6) {
+    } else if (password.length < 3) {
       newErrors.password = "Password must be at least 6 characters";
     }
 
@@ -47,12 +51,22 @@ export default function Login() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (event: FormEvent) => {
+  const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
 
     if (validateForm()) {
-      Cookies.set("loginToken", email, { expires: 7 });
-      router.push("/");
+      try {
+        const result = await request("https://localhost:7149/api/auth/login", {
+          method: "POST",
+          body: { email, password },
+        });
+        console.log("POST request succeeded:", result);
+        Cookies.set("loginToken", result.userId, { expires: 7 });
+        setIsLoggedIn(true);
+        router.push("/");
+      } catch (err) {
+        console.error("POST request failed:", err);
+      }
     }
   };
 

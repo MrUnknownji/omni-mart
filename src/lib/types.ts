@@ -2,7 +2,8 @@ import { Dispatch, SetStateAction } from "react";
 
 export interface User {
   userId: string;
-  name: string;
+  firstName: string;
+  lastName?: string;
   email: string;
   password: string;
   profileImage?: string;
@@ -92,8 +93,8 @@ export interface Order {
   shipping: number;
   tax: number;
   items: OrderItem[];
-  shippingAddress: Address; // Added for order fulfillment
-  billingAddress: Address; // Added for payment processing
+  shippingAddress: Address;
+  billingAddress: Address;
   paymentMethod: string;
   createdAt: Date;
   updatedAt: Date;
@@ -148,8 +149,8 @@ export interface SlideContent {
 }
 
 export interface GlobalContextType {
-  user: User | null;
-  setUser: Dispatch<SetStateAction<User | null>>;
+  user: User;
+  setUser: Dispatch<SetStateAction<User>>;
   cart: CartItem[];
   setCart: Dispatch<SetStateAction<CartItem[]>>;
   products: Product[];
@@ -170,4 +171,6 @@ export interface GlobalContextType {
   setIsLoading: Dispatch<SetStateAction<boolean>>;
   slideContents: SlideContent[];
   setSlideContents: Dispatch<SetStateAction<SlideContent[]>>;
+  isLoggedIn: boolean;
+  setIsLoggedIn: Dispatch<SetStateAction<boolean>>;
 }

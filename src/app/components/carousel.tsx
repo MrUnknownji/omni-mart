@@ -17,7 +17,8 @@ const CarouselSlide: React.FC<SlideContent> = ({
       className="w-full h-full object-cover object-center"
       src={imageSrc}
       alt={title}
-      layout="fill"
+      width={1000}
+      height={1000}
     />
     <div className="absolute inset-0 bg-background/25 dark:bg-background/50 flex flex-col justify-center items-start p-4 sm:p-6 md:p-8 lg:p-12">
       <h1

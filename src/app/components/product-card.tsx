@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { ShoppingCart } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -16,6 +16,7 @@ import { useToast } from "@/components/ui/use-toast";
 import Link from "next/link";
 import { Product } from "@/lib/types";
 import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
 
 interface ProductCardProps {
   product: Product;
@@ -23,7 +24,7 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ product, className }: ProductCardProps) {
-  const { cart, setCart } = useGlobalData();
+  const { cart, setCart, isLoggedIn } = useGlobalData();
   const { toast } = useToast();
   const router = useRouter();
 
@@ -55,11 +56,8 @@ export default function ProductCard({ product, className }: ProductCardProps) {
         : `Item added to cart`,
       description: "You can now checkout",
       action: (
-        <ToastAction
-          altText="View Cart"
-          onClick={() => console.log("View Cart")}
-        >
-          <Button onClick={() => router.push("/cart")}>View Cart</Button>
+        <ToastAction altText="View Cart" onClick={() => router.push("/cart")}>
+          View Cart
         </ToastAction>
       ),
     });
@@ -94,7 +92,11 @@ export default function ProductCard({ product, className }: ProductCardProps) {
         </div>
       </CardContent>
       <CardFooter>
-        <Button className="w-full" onClick={() => addToCart()}>
+        <Button
+          className="w-full"
+          disabled={!isLoggedIn}
+          onClick={() => addToCart()}
+        >
           <ShoppingCart className="mr-2 h-4 w-4" /> Add to cart
         </Button>
       </CardFooter>

@@ -23,7 +23,8 @@ export const dummyAddress: Address = {
 
 export const dummyUser: User = {
   userId: "user1",
-  name: "John Doe",
+  firstName: "John",
+  lastName: "Doe",
   email: "john@example.com",
   password: "hashedpassword",
   profileImage:

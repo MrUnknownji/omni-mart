@@ -5,8 +5,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import NavDropDownMenu from "./nav-dropdown-menu";
-import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
+import { useGlobalData } from "../Context/GlobalData";
 
 interface NavBarProps {
   isSearch?: boolean;
@@ -19,20 +19,15 @@ const NavBar = ({
   searchTerm = "",
   setSearchTerm = () => {},
 }: NavBarProps) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
   const router = useRouter();
-
-  useEffect(() => {
-    setIsLoggedIn(!!Cookies.get("loginToken"));
-  }, []);
+  const { isLoggedIn } = useGlobalData();
 
   return (
     <nav className="sticky top-0 left-0 w-full bg-background/50 backdrop-blur-3xl border border-border z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center flex-1">
-            <Avatar onClick={() => router.push("/")}>
+            <Avatar onClick={() => router.push("/")} className="cursor-pointer">
               <AvatarImage src="/favicon.svg" />
               <AvatarFallback>CN</AvatarFallback>
             </Avatar>

@@ -14,6 +14,9 @@ import { Label } from "@/components/ui/label";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useGlobalData } from "../Context/GlobalData";
+import useApi from "../API/useApi";
+import { AUTH_API_URL } from "../API/API_DATA";
 
 const SignUp = () => {
   const [firstName, setFirstName] = useState("");
@@ -22,16 +25,14 @@ const SignUp = () => {
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const router = useRouter();
+  const { setIsLoggedIn } = useGlobalData();
+  const { request, loading, error } = useApi();
 
   const validateForm = () => {
     const newErrors: { [key: string]: string } = {};
 
     if (!firstName.trim()) {
       newErrors.firstName = "First name is required";
-    }
-
-    if (!lastName.trim()) {
-      newErrors.lastName = "Last name is required";
     }
 
     if (!email.trim()) {
@@ -50,12 +51,32 @@ const SignUp = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (event: FormEvent) => {
+  const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
 
     if (validateForm()) {
-      Cookies.set("loginToken", email, { expires: 7 });
-      router.push("/");
+      try {
+        const newUser = lastName
+          ? { firstName, lastName, email, password }
+          : {
+              firstName,
+              email,
+              password,
+            };
+        const result = await request(
+          "https://localhost:7149/api/auth/register",
+          {
+            method: "POST",
+            body: newUser,
+          }
+        );
+        console.log("POST request succeeded:", result);
+        Cookies.set("loginToken", result.userId, { expires: 7 });
+        setIsLoggedIn(true);
+        router.push("/");
+      } catch (err) {
+        console.error("POST request failed:", err);
+      }
     }
   };
 
@@ -100,11 +121,7 @@ const SignUp = () => {
                     placeholder="Robinson"
                     value={lastName}
                     onChange={(e) => setLastName(e.target.value)}
-                    required
                   />
-                  {errors.lastName && (
-                    <p className="text-red-500 text-sm">{errors.lastName}</p>
-                  )}
                 </div>
               </div>
               <div className="grid gap-2">
