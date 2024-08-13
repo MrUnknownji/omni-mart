@@ -84,7 +84,7 @@ export default function OrderDetailPage({
               <div>
                 <h3 className="mb-2 font-semibold">Shipping Address</h3>
                 <address className="not-italic text-muted-foreground">
-                  {user?.name}
+                  {user.firstName + " " + user?.lastName}
                   <br />
                   {user?.address?.street}
                   <br />

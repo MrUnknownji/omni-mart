@@ -315,7 +315,7 @@ export function UserCart({ searchTerm }: { searchTerm: string }) {
                   <div className="grid gap-3">
                     <div className="font-semibold">Shipping Information</div>
                     <address className="grid gap-0.5 not-italic text-muted-foreground">
-                      <span>{user?.name}</span>
+                      <span>{user.firstName + " " + user?.lastName}</span>
                       <span>{user?.address?.city}</span>
                     </address>
                   </div>
@@ -332,7 +332,7 @@ export function UserCart({ searchTerm }: { searchTerm: string }) {
                   <dl className="grid gap-3">
                     <div className="flex items-center justify-between">
                       <dt className="text-muted-foreground">Customer</dt>
-                      <dd>{user?.name}</dd>
+                      <dd>{user.firstName + " " + user?.lastName}</dd>
                     </div>
                     <div className="flex items-center justify-between">
                       <dt className="text-muted-foreground">Email</dt>
