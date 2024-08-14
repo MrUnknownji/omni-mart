@@ -1,5 +1,5 @@
 const AUTH_API_URL = "https://localhost:7149/api/auth";
-const USER_API_URL = "https://localhost:7149/api/user";
+const USER_API_URL = "https://localhost:7149/api/user/current";
 const PRODUCT_API_URL = "https://localhost:7149/api/product";
 const CART_API_URL = "https://localhost:7149/api/cart";
 const CATEGORY_API_URL = "https://localhost:7149/api/category";

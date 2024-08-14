@@ -19,6 +19,7 @@ const CarouselSlide: React.FC<SlideContent> = ({
       alt={title}
       width={1000}
       height={1000}
+      priority={true}
     />
     <div className="absolute inset-0 bg-background/25 dark:bg-background/50 flex flex-col justify-center items-start p-4 sm:p-6 md:p-8 lg:p-12">
       <h1

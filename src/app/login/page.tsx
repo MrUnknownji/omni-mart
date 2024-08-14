@@ -61,7 +61,7 @@ export default function Login() {
           body: { email, password },
         });
         console.log("POST request succeeded:", result);
-        Cookies.set("loginToken", result.userId, { expires: 7 });
+        Cookies.set("loginToken", result.token, { expires: 7 });
         setIsLoggedIn(true);
         router.push("/");
       } catch (err) {

@@ -19,6 +19,7 @@ import NavBar from "../components/navbar";
 import { useGlobalData } from "../Context/GlobalData";
 import { User as UserType } from "@/lib/types";
 import { useRouter } from "next/navigation";
+import { dummyUser } from "../Context/Data";
 
 export default function ProfilePage() {
   const [isEditing, setIsEditing] = useState(false);
@@ -47,8 +48,14 @@ export default function ProfilePage() {
               <Card>
                 <CardHeader className="flex flex-row items-center gap-4">
                   <Avatar className="h-20 w-20">
-                    <AvatarImage src={user?.profileImage} alt="User Avatar" />
-                    <AvatarFallback>JD</AvatarFallback>
+                    <AvatarImage
+                      src={user?.profileImage ?? dummyUser.profileImage}
+                      alt="User Avatar"
+                    />
+                    <AvatarFallback>
+                      {user.firstName.split("")[0] +
+                        user.lastName?.split("")[0]}
+                    </AvatarFallback>
                   </Avatar>
                   <div>
                     <CardTitle className="text-2xl">
@@ -63,7 +70,7 @@ export default function ProfilePage() {
                   <form onSubmit={handleSubmit}>
                     <div className="grid gap-4">
                       <div className="grid gap-2">
-                        <Label htmlFor="name">FirstName</Label>
+                        <Label htmlFor="name">First Name</Label>
                         <div className="flex items-center gap-2">
                           <User className="h-4 w-4 text-muted-foreground" />
                           <Input
@@ -75,13 +82,13 @@ export default function ProfilePage() {
                         </div>
                       </div>
                       <div className="grid gap-2">
-                        <Label htmlFor="name">LastName</Label>
+                        <Label htmlFor="name">Last Name</Label>
                         <div className="flex items-center gap-2">
                           <User className="h-4 w-4 text-muted-foreground" />
                           <Input
                             id="lastName"
                             name="lastName"
-                            value={user?.lastName}
+                            value={user?.lastName ?? ""}
                             disabled={!isEditing}
                           />
                         </div>
@@ -106,7 +113,7 @@ export default function ProfilePage() {
                           <Input
                             id="phone"
                             name="phone"
-                            value={user?.phone}
+                            value={user?.phone ?? ""}
                             disabled={!isEditing}
                           />
                         </div>
@@ -118,7 +125,7 @@ export default function ProfilePage() {
                           <Input
                             id="address"
                             name="address"
-                            value={user?.address?.city}
+                            value={user?.address?.city ?? ""}
                             disabled={!isEditing}
                           />
                         </div>
@@ -154,11 +161,8 @@ export default function ProfilePage() {
                 <CardContent>
                   <div className="space-y-4">
                     {orders.map((order) => (
-                      <>
-                        <div
-                          className="flex items-center justify-between"
-                          key={order.orderId}
-                        >
+                      <div key={order.orderId}>
+                        <div className="flex items-center justify-between">
                           <div className="flex items-center gap-2">
                             <Package className="h-4 w-4" />
                             <span>Order #{order.orderId}</span>
@@ -175,7 +179,7 @@ export default function ProfilePage() {
                           </Button>
                         </div>
                         <Separator />
-                      </>
+                      </div>
                     ))}
                   </div>
                 </CardContent>
@@ -198,7 +202,6 @@ export default function ProfilePage() {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
-                    {/* This is where you'd map through the user's payment methods */}
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
                         <CreditCard className="h-4 w-4" />
@@ -218,7 +221,6 @@ export default function ProfilePage() {
                         Edit
                       </Button>
                     </div>
-                    {/* More payment method items would go here */}
                   </div>
                 </CardContent>
                 <CardFooter>

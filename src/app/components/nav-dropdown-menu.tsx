@@ -45,7 +45,7 @@ const NavDropDownMenu = () => {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Avatar className="cursor-pointer">
-          <AvatarImage src={user?.profileImage || "/favicon.svg"} />
+          <AvatarImage src={user?.profileImage ?? "/favicon.svg"} />
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>

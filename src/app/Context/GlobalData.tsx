@@ -55,7 +55,9 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
       if (token) {
         try {
           setIsLoading(true);
-          const userData = await request<User>(`${USER_API_URL}/${token}`);
+          const userData = await request<User>(USER_API_URL, {
+            headers: { Authorization: `Bearer ${token}` },
+          });
           setUser(userData);
           setIsLoggedIn(true);
         } catch (err) {
