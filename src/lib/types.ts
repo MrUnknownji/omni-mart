@@ -52,6 +52,7 @@ export interface Product {
   sku: string; // Added for inventory management
   rating: number;
   reviewCount: number;
+  status: ProductStatus;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -106,6 +107,12 @@ export enum OrderStatus {
   Shipped = "shipped",
   Delivered = "delivered",
   Cancelled = "cancelled",
+}
+
+export enum ProductStatus {
+  Active = "active",
+  Draft = "draft",
+  Archived = "archived",
 }
 
 export interface Review {

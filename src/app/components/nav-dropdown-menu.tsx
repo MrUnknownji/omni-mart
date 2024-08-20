@@ -30,7 +30,7 @@ import { useTheme } from "next-themes";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 
-const NavDropDownMenu = () => {
+const NavDropDownMenu = ({ small = false }) => {
   const { user, isLoggedIn, setIsLoggedIn } = useGlobalData();
   const { theme, setTheme } = useTheme();
   const router = useRouter();
@@ -44,7 +44,7 @@ const NavDropDownMenu = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Avatar className="cursor-pointer">
+        <Avatar className={`cursor-pointer ${small ? "h-8 w-8" : ""}`}>
           <AvatarImage src={user?.profileImage ?? "/favicon.svg"} />
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>

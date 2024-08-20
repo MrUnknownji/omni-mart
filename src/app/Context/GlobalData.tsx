@@ -53,6 +53,11 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
     const fetchUserData = async () => {
       const token = Cookies.get("loginToken");
       if (token) {
+        if (token === "dummy_user_token") {
+          setIsLoggedIn(true);
+          setUser(dummyUser);
+          return;
+        }
         try {
           setIsLoading(true);
           const userData = await request<User>(USER_API_URL, {

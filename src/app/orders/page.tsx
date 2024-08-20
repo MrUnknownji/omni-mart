@@ -19,7 +19,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import Link from "next/link";
 import NavBar from "../components/navbar";
 import Footer from "../components/footer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";

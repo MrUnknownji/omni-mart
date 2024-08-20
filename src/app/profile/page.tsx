@@ -17,7 +17,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import NavBar from "../components/navbar";
 import { useGlobalData } from "../Context/GlobalData";
-import { User as UserType } from "@/lib/types";
 import { useRouter } from "next/navigation";
 import { dummyUser } from "../Context/Data";
 
