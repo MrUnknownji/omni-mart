@@ -1,39 +1,25 @@
 "use client";
 import { useState } from "react";
-import { Check, CreditCard, HelpCircle } from "lucide-react";
+import { Check, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import NavBar from "../components/navbar";
+import Footer from "../components/footer";
 
 export default function SubscriptionPage() {
-  const [isAnnual, setIsAnnual] = useState(false);
+  const [isAnnual, setIsAnnual] = useState(true);
 
   const subscriptionData = {
-    name: "Omni Mart Plus",
+    name: "OmniMart Plus",
     monthlyPrice: 9.99,
     annualPrice: 99.99,
     features: [
-      "Free shipping on all orders",
-      "Early access to sales",
-      "Exclusive member-only deals",
-      "24/7 customer support",
-      "30-day money-back guarantee",
+      "Free priority shipping on all orders",
+      "Early access to new collections and sales",
+      "Exclusive member-only discounts",
+      "Dedicated 24/7 concierge support",
+      "Extended 60-day return window",
     ],
   };
 
@@ -42,75 +28,58 @@ export default function SubscriptionPage() {
     : subscriptionData.monthlyPrice;
 
   return (
-    <>
+    <div className="min-h-screen flex flex-col bg-background">
       <NavBar />
-      <div className="min-h-screen bg-muted/40 p-4 sm:p-6 lg:p-8">
-        <div className="mx-auto max-w-3xl">
-          <h1 className="mb-6 text-center text-3xl font-bold">
-            Upgrade Your Shopping Experience
+      <main className="flex-grow flex flex-col items-center justify-center py-20 px-6 lg:px-12">
+        <div className="max-w-3xl w-full text-center mb-16">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-light tracking-tight mb-6">
+            Elevate Your Experience
           </h1>
-          <Card className="w-full">
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <div>
-                  <CardTitle className="text-2xl">
-                    {subscriptionData.name}
-                  </CardTitle>
-                  <CardDescription>Get more from your shopping</CardDescription>
-                </div>
-                <Badge variant="secondary" className="text-sm">
-                  Most Popular
-                </Badge>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="mb-6 text-center">
-                <span className="text-4xl font-bold">${currentPrice}</span>
-                <span className="text-muted-foreground">
-                  {isAnnual ? "/year" : "/month"}
-                </span>
-              </div>
-              <div className="mb-6 flex items-center justify-center space-x-2">
-                <Label htmlFor="annual-billing">Monthly</Label>
-                <Switch
-                  id="annual-billing"
-                  checked={isAnnual}
-                  onCheckedChange={setIsAnnual}
-                />
-                <Label htmlFor="annual-billing">Annual</Label>
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <HelpCircle className="h-4 w-4 text-muted-foreground" />
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>Save 17% with annual billing</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-              </div>
-              <ul className="space-y-2">
-                {subscriptionData.features.map((feature, index) => (
-                  <li key={index} className="flex items-center">
-                    <Check className="mr-2 h-4 w-4 text-green-500" />
-                    {feature}
-                  </li>
-                ))}
-              </ul>
-            </CardContent>
-            <CardFooter>
-              <Button className="w-full" size="lg">
-                <CreditCard className="mr-2 h-4 w-4" />
-                Subscribe Now
-              </Button>
-            </CardFooter>
-          </Card>
-          <p className="mt-4 text-center text-sm text-muted-foreground">
-            By subscribing, you agree to our Terms of Service and Privacy
-            Policy.
+          <p className="text-lg md:text-xl text-muted-foreground font-light max-w-2xl mx-auto">
+            Join OmniMart Plus and unlock a world of premium benefits designed exclusively for our most valued members.
           </p>
         </div>
-      </div>
-    </>
+
+        <div className="w-full max-w-lg mx-auto bg-muted/5 border border-border/40 p-8 md:p-12 shadow-2xl">
+          <div className="flex flex-col items-center mb-10 text-center">
+            <h2 className="text-2xl font-medium tracking-wide mb-2 uppercase">{subscriptionData.name}</h2>
+            <div className="flex items-end justify-center gap-1 mb-6">
+              <span className="text-5xl font-light tracking-tight">${currentPrice}</span>
+              <span className="text-muted-foreground pb-1">/{isAnnual ? "year" : "month"}</span>
+            </div>
+            
+            <div className="flex items-center justify-center gap-4 bg-muted/20 px-6 py-3 border border-border/40">
+              <Label htmlFor="billing-cycle" className={`text-sm tracking-wider cursor-pointer transition-colors ${!isAnnual ? "text-foreground font-medium" : "text-muted-foreground"}`}>MONTHLY</Label>
+              <Switch
+                id="billing-cycle"
+                checked={isAnnual}
+                onCheckedChange={setIsAnnual}
+              />
+              <Label htmlFor="billing-cycle" className={`text-sm tracking-wider cursor-pointer transition-colors ${isAnnual ? "text-foreground font-medium" : "text-muted-foreground"}`}>
+                ANNUALLY <span className="ml-1 text-xs text-green-600 font-bold">SAVE 17%</span>
+              </Label>
+            </div>
+          </div>
+
+          <div className="space-y-4 mb-10">
+            {subscriptionData.features.map((feature, index) => (
+              <div key={index} className="flex items-start gap-3">
+                <Check className="h-5 w-5 text-foreground shrink-0 mt-0.5" />
+                <span className="text-muted-foreground">{feature}</span>
+              </div>
+            ))}
+          </div>
+
+          <Button className="w-full h-14 text-sm font-medium tracking-widest uppercase bg-foreground text-background hover:bg-foreground/90 transition-all group">
+            Become a Member <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+          </Button>
+
+          <p className="mt-6 text-center text-xs text-muted-foreground uppercase tracking-widest">
+            Cancel anytime. No hidden fees.
+          </p>
+        </div>
+      </main>
+      <Footer />
+    </div>
   );
 }

@@ -1,12 +1,12 @@
-const AUTH_API_URL = "https://localhost:7149/api/auth";
-const USER_API_URL = "https://localhost:7149/api/user/current";
-const PRODUCT_API_URL = "https://localhost:7149/api/product";
-const CART_API_URL = "https://localhost:7149/api/cart";
-const CATEGORY_API_URL = "https://localhost:7149/api/category";
-const BRAND_API_URL = "https://localhost:7149/api/brand";
-const ORDER_API_URL = "https://localhost:7149/api/order";
-const REVIEW_API_URL = "https://localhost:7149/api/review";
-const WISHLIST_API_URL = "https://localhost:7149/api/wishlist";
+const AUTH_API_URL = "/api/auth";
+const USER_API_URL = "/api/user";
+const PRODUCT_API_URL = "/api/products";
+const CART_API_URL = "/api/cart";
+const CATEGORY_API_URL = "/api/categories";
+const BRAND_API_URL = "/api/brands";
+const ORDER_API_URL = "/api/orders";
+const REVIEW_API_URL = "/api/reviews";
+const WISHLIST_API_URL = "/api/wishlist";
 
 export {
   AUTH_API_URL,

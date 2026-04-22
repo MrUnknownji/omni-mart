@@ -1,93 +1,31 @@
 import React from "react";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import { Facebook, Twitter, Instagram, Github } from "lucide-react";
+import Link from "next/link";
 
 const Footer = () => {
   return (
-    <footer className="bg-background text-foreground py-12 mt-8">
-      <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          <div>
-            <h3 className="font-bold text-lg mb-4">About Us</h3>
-            <p className="text-sm text-muted-foreground">
-              Your one-stop shop for all your needs. Quality products, great
-              prices, and excellent customer service.
-            </p>
+    <footer className="bg-background text-foreground border-t border-border/40 py-16">
+      <div className="max-w-7xl mx-auto px-6 lg:px-12 flex flex-col justify-between items-start md:flex-row md:items-end">
+        <div className="mb-12 md:mb-0 space-y-4 max-w-sm">
+           <div className="flex items-center gap-2">
+            <div className="w-6 h-6 bg-foreground text-background flex items-center justify-center font-bold text-xs rounded-sm tracking-tighter">OM</div>
+            <span className="font-semibold tracking-wide uppercase">OmniMart</span>
           </div>
-          <div>
-            <h3 className="font-bold text-lg mb-4">Quick Links</h3>
-            <ul className="space-y-2">
-              <li>
-                <a href="#" className="text-sm hover:text-primary">
-                  Home
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-sm hover:text-primary">
-                  Products
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-sm hover:text-primary">
-                  About
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-sm hover:text-primary">
-                  Contact
-                </a>
-              </li>
-            </ul>
-          </div>
-          <div>
-            <h3 className="font-bold text-lg mb-4">Contact Us</h3>
-            <p className="text-sm text-muted-foreground">
-              123 Shopping Street, Market Town, MT 12345
-            </p>
-            <p className="text-sm text-muted-foreground">
-              Email: omni-mart@example.com
-            </p>
-            <p className="text-sm text-muted-foreground">
-              Phone: (123) 456-7890
-            </p>
-          </div>
-          <div>
-            <h3 className="font-bold text-lg mb-4">Newsletter</h3>
-            <p className="text-sm text-muted-foreground mb-2">
-              Stay updated with our latest offers
-            </p>
-            <div className="flex space-x-2">
-              <Input
-                type="email"
-                placeholder="Your email"
-                className="flex-grow"
-              />
-              <Button>Subscribe</Button>
-            </div>
-          </div>
-        </div>
-        <Separator className="my-8" />
-        <div className="flex flex-col md:flex-row justify-between items-center">
-          <p className="text-sm text-muted-foreground">
-            &copy; 2024 OmniMart. All rights reserved.
+          <p className="text-muted-foreground text-sm leading-relaxed">
+            Curated essentials for the modern lifestyle. Precision crafted, invisibly excellent.
           </p>
-          <div className="flex space-x-4 mt-4 md:mt-0">
-            <a href="#" className="text-muted-foreground hover:text-primary">
-              <Facebook size={20} />
-            </a>
-            <a href="#" className="text-muted-foreground hover:text-primary">
-              <Twitter size={20} />
-            </a>
-            <a href="#" className="text-muted-foreground hover:text-primary">
-              <Instagram size={20} />
-            </a>
-            <a href="#" className="text-muted-foreground hover:text-primary">
-              <Github size={20} />
-            </a>
-          </div>
         </div>
+        
+        <div className="flex flex-col md:flex-row gap-8 lg:gap-16 w-full md:w-auto items-start md:items-end justify-end">
+          <ul className="flex flex-wrap gap-6 text-sm text-muted-foreground uppercase tracking-widest font-medium">
+            <li><Link href="/privacy" className="hover:text-foreground transition-colors">Privacy</Link></li>
+            <li><Link href="/terms" className="hover:text-foreground transition-colors">Terms</Link></li>
+            <li><Link href="/shipping" className="hover:text-foreground transition-colors">Shipping</Link></li>
+            <li><Link href="/contact" className="hover:text-foreground transition-colors">Contact</Link></li>
+          </ul>
+        </div>
+      </div>
+      <div className="max-w-7xl mx-auto px-6 lg:px-12 mt-16 pt-8 border-t border-border/20 text-xs text-muted-foreground uppercase tracking-wider flex justify-between">
+        <p>&copy; {new Date().getFullYear()} OmniMart. Invisible Excellence.</p>
       </div>
     </footer>
   );

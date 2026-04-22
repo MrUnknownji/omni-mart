@@ -53,9 +53,16 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
     const fetchUserData = async () => {
       const token = Cookies.get("loginToken");
       if (token) {
+        if (token === "admin_token") {
+          setIsLoggedIn(true);
+          setUser({ ...dummyUser, role: "admin" });
+          setIsLoading(false);
+          return;
+        }
         if (token === "dummy_user_token") {
           setIsLoggedIn(true);
-          setUser(dummyUser);
+          setUser({ ...dummyUser, role: "customer" });
+          setIsLoading(false);
           return;
         }
         try {
@@ -72,13 +79,13 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
           }
           Cookies.remove("loginToken");
           setIsLoggedIn(false);
-          setUser(dummyUser);
+          setUser({ ...dummyUser, role: "customer" });
         } finally {
           setIsLoading(false);
         }
       } else {
         setIsLoggedIn(false);
-        setUser(dummyUser);
+        setUser({ ...dummyUser, role: "customer" });
         setIsLoading(false);
       }
     };

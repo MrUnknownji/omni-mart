@@ -5,8 +5,10 @@ import { Bell, Settings, HelpCircle, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import NavDropDownMenu from "../components/nav-dropdown-menu";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import NotificationDropdown from "./components/NotificationDropdown";
+import { useGlobalData } from "../Context/GlobalData";
+import { useRouter } from "next/navigation";
 
 export default function AdminLayout({
   children,
@@ -15,6 +17,20 @@ export default function AdminLayout({
 }) {
   const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { user, isLoggedIn, isLoading } = useGlobalData();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!isLoading) {
+      if (!isLoggedIn || user.role !== "admin") {
+        router.push("/");
+      }
+    }
+  }, [isLoggedIn, user, isLoading, router]);
+
+  if (isLoading || !isLoggedIn || user.role !== "admin") {
+    return null; // or a loading spinner
+  }
 
   const isActive = (path: string) => {
     return pathname === path
