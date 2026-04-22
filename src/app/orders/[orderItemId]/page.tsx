@@ -10,7 +10,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useEffect, useState } from "react";
+import { useEffect, useState, use } from "react";
 import { Order, OrderItem, OrderStatus } from "@/lib/types";
 import { useGlobalData } from "@/app/Context/GlobalData";
 import { useRouter } from "next/navigation";
@@ -25,11 +25,12 @@ const statusStyles: Record<string, string> = {
   [OrderStatus.Cancelled]: "bg-destructive/10 text-destructive",
 };
 
-export default function OrderDetailPage({
-  params,
-}: {
-  params: { orderItemId: string };
-}) {
+export default function OrderDetailPage(
+  props: {
+    params: Promise<{ orderItemId: string }>;
+  }
+) {
+  const params = use(props.params);
   const [order, setOrder] = useState<Order>({} as Order);
   const { orders, user } = useGlobalData();
   const [orderItems, setOrderItems] = useState<OrderItem[]>([]);

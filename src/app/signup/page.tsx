@@ -85,91 +85,95 @@ const SignUp = () => {
 
   return (
     <div className="flex flex-col items-center justify-center h-screen">
-      <div className="absolute top-4 left-4 flex items-center justify-center">
+      <div className="absolute top-8 left-8 flex items-center justify-center">
         <Link href="/">
-          <Avatar>
-            <AvatarImage src="/favicon.svg" />
-            <AvatarFallback>CN</AvatarFallback>
-          </Avatar>
+          <div className="flex items-center gap-2 cursor-pointer">
+            <div className="w-8 h-8 bg-foreground text-background flex items-center justify-center font-bold text-lg tracking-tighter">OM</div>
+            <span className="font-semibold text-xl tracking-wide uppercase hidden sm:block">OmniMart</span>
+          </div>
         </Link>
       </div>
-      <Card className="mx-auto max-w-sm">
-        <CardHeader>
-          <CardTitle className="text-xl">Sign Up</CardTitle>
-          <CardDescription>
+      <div className="mx-auto max-w-sm w-full border border-border/50 bg-card shadow-sm p-8">
+        <div className="mb-8 space-y-1">
+          <h1 className="text-2xl font-light tracking-tight">Sign Up</h1>
+          <p className="text-sm text-muted-foreground">
             Enter your information to create an account
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
+          </p>
+        </div>
+        <div>
           <form onSubmit={handleSubmit}>
             <div className="grid gap-4">
               <div className="grid grid-cols-2 gap-4">
                 <div className="grid gap-2">
-                  <Label htmlFor="first-name">First name</Label>
+                  <Label htmlFor="first-name" className="text-xs font-medium tracking-widest uppercase text-muted-foreground">First name</Label>
                   <Input
                     id="first-name"
                     placeholder="Max"
                     value={firstName}
                     onChange={(e) => setFirstName(e.target.value)}
+                    className="h-11 bg-muted/50 border-border/40 focus-visible:ring-1 focus-visible:ring-foreground/20 text-sm"
                     required
                   />
                   {errors.firstName && (
-                    <p className="text-red-500 text-sm">{errors.firstName}</p>
+                    <p className="text-destructive text-xs">{errors.firstName}</p>
                   )}
                 </div>
                 <div className="grid gap-2">
-                  <Label htmlFor="last-name">Last name</Label>
+                  <Label htmlFor="last-name" className="text-xs font-medium tracking-widest uppercase text-muted-foreground">Last name</Label>
                   <Input
                     id="last-name"
                     placeholder="Robinson"
                     value={lastName}
                     onChange={(e) => setLastName(e.target.value)}
+                    className="h-11 bg-muted/50 border-border/40 focus-visible:ring-1 focus-visible:ring-foreground/20 text-sm"
                   />
                 </div>
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email" className="text-xs font-medium tracking-widest uppercase text-muted-foreground">Email</Label>
                 <Input
                   id="email"
                   type="email"
                   placeholder="m@example.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
+                  className="h-11 bg-muted/50 border-border/40 focus-visible:ring-1 focus-visible:ring-foreground/20 text-sm"
                   required
                 />
                 {errors.email && (
-                  <p className="text-red-500 text-sm">{errors.email}</p>
+                  <p className="text-destructive text-xs">{errors.email}</p>
                 )}
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password" className="text-xs font-medium tracking-widest uppercase text-muted-foreground">Password</Label>
                 <Input
                   id="password"
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  className="h-11 bg-muted/50 border-border/40 focus-visible:ring-1 focus-visible:ring-foreground/20 text-sm"
                   required
                 />
                 {errors.password && (
-                  <p className="text-red-500 text-sm">{errors.password}</p>
+                  <p className="text-destructive text-xs">{errors.password}</p>
                 )}
               </div>
-              <Button type="submit" className="w-full">
+              <Button type="submit" className="w-full h-11 mt-2 font-medium tracking-widest uppercase text-sm">
                 Create an account
               </Button>
-              <Button variant="outline" className="w-full">
+              <Button variant="outline" className="w-full h-11 font-medium tracking-widest uppercase text-xs">
                 Sign up with GitHub
               </Button>
             </div>
           </form>
-          <div className="mt-4 text-center text-sm">
+          <div className="mt-6 text-center text-sm text-muted-foreground">
             Already have an account?{" "}
-            <Link href="/login" className="underline">
+            <Link href="/login" className="text-foreground hover:underline underline-offset-4">
               Sign in
             </Link>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </div>
   );
 };

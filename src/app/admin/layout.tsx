@@ -40,8 +40,8 @@ export default function AdminLayout({
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container flex h-14 items-center justify-between">
+      <header className="sticky top-0 z-50 w-full border-b bg-background/90 backdrop-blur-xl transition-all duration-300">
+        <div className="max-w-7xl mx-auto px-6 lg:px-12 flex h-20 items-center justify-between">
           <div className="flex items-center">
             <Button
               size="icon"
@@ -57,11 +57,13 @@ export default function AdminLayout({
             </Link>
           </div>
           <nav
-            className={`absolute left-0 top-14 w-full bg-background md:static md:w-auto ${
-              isMenuOpen ? "block" : "hidden"
-            } md:block`}
+            className={`${
+              isMenuOpen 
+                ? "absolute left-0 top-14 w-full bg-background border-b z-50 animate-in fade-in slide-in-from-top-2 duration-300" 
+                : "hidden"
+            } md:static md:flex md:w-auto md:border-none`}
           >
-            <div className="flex flex-col space-y-4 p-4 md:flex-row md:space-x-6 md:space-y-0 md:p-0">
+            <div className="flex flex-col space-y-4 p-6 md:flex-row md:space-x-8 md:space-y-0 md:p-0">
               <Link
                 className={`transition-colors ${isActive("/admin")}`}
                 href="/admin"
@@ -95,22 +97,20 @@ export default function AdminLayout({
         </div>
       </header>
 
-      <main className="container py-6">{children}</main>
+      <main className="max-w-7xl mx-auto px-6 lg:px-12 py-10 w-full min-h-[calc(100vh-160px)]">
+        {children}
+      </main>
 
-      <footer className="border-t">
-        <div className="container flex flex-col items-center justify-between py-4 md:flex-row">
-          <p className="text-sm text-muted-foreground mb-4 md:mb-0">
-            © 2024 OmniMart. All rights reserved.
-          </p>
-          <div className="flex items-center space-x-4">
-            <Button variant="ghost" size="icon">
-              <Settings className="h-4 w-4" />
-              <span className="sr-only">Settings</span>
-            </Button>
-            <Button variant="ghost" size="icon">
-              <HelpCircle className="h-4 w-4" />
-              <span className="sr-only">Help</span>
-            </Button>
+      <footer className="border-t bg-muted/20">
+        <div className="max-w-7xl mx-auto px-6 lg:px-12 py-8">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+            <div className="flex items-center gap-2">
+              <div className="w-6 h-6 bg-foreground text-background flex items-center justify-center font-bold text-xs tracking-tighter">OM</div>
+              <span className="text-sm font-semibold tracking-wide uppercase">Admin Portal</span>
+            </div>
+            <p className="text-[10px] text-muted-foreground tracking-[0.2em] uppercase">
+              © 2026 Omni-Mart — Intelligent Logistics & Performance
+            </p>
           </div>
         </div>
       </footer>

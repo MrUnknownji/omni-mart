@@ -9,13 +9,14 @@ import Cookies from "js-cookie";
 import { useGlobalData } from "../Context/GlobalData";
 import useApi from "../API/useApi";
 import { User as UserIcon } from "lucide-react";
+import { dummyUser } from "../Context/Data";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const router = useRouter();
-  const { setIsLoggedIn } = useGlobalData();
+  const { setIsLoggedIn, setUser } = useGlobalData();
   const { request } = useApi();
 
   useEffect(() => {
@@ -46,8 +47,16 @@ export default function Login() {
 
   const handleFastLogin = () => {
     Cookies.set("loginToken", "dummy_user_token", { expires: 7 });
+    setUser({ ...dummyUser, role: "customer" });
     setIsLoggedIn(true);
     router.push("/");
+  };
+
+  const handleFastAdminLogin = () => {
+    Cookies.set("loginToken", "admin_token", { expires: 7 });
+    setUser({ ...dummyUser, role: "admin" });
+    setIsLoggedIn(true);
+    router.push("/admin");
   };
 
   const handleSubmit = async (event: FormEvent) => {
@@ -56,6 +65,7 @@ export default function Login() {
     if (validateForm()) {
       if (email === "admin@email.com" && password === "Test@123") {
         Cookies.set("loginToken", "admin_token", { expires: 7 });
+        setUser({ ...dummyUser, role: "admin" });
         setIsLoggedIn(true);
         router.push("/admin");
         return;
@@ -95,13 +105,20 @@ export default function Login() {
           <p className="text-sm text-muted-foreground">Enter your email below to sign in to your account</p>
         </div>
 
-        <div className="grid gap-4 mb-6">
+        <div className="grid grid-cols-2 gap-4 mb-6">
           <Button
             variant="outline"
             className="w-full justify-start gap-2 text-muted-foreground border-dashed"
             onClick={handleFastLogin}
           >
-            <UserIcon className="w-4 h-4" /> Fast Login: Test User
+            <UserIcon className="w-4 h-4" /> Test User
+          </Button>
+          <Button
+            variant="outline"
+            className="w-full justify-start gap-2 text-muted-foreground border-dashed"
+            onClick={handleFastAdminLogin}
+          >
+            <UserIcon className="w-4 h-4" /> Test Admin
           </Button>
         </div>
 

@@ -104,10 +104,13 @@ export default function OrdersPage() {
   );
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Orders Management</h1>
+    <div className="w-full space-y-8">
+      <div>
+        <h1 className="text-3xl font-light tracking-tight">Orders Management</h1>
+        <p className="text-sm text-muted-foreground mt-1">Monitor and manage logistics across the network</p>
+      </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         <Card>
           <CardHeader>
             <CardTitle>Total Orders</CardTitle>
@@ -181,7 +184,7 @@ export default function OrdersPage() {
                   fill="#8884d8"
                   dataKey="value"
                   label={({ name, percent }) =>
-                    `${name} ${(percent * 100).toFixed(0)}%`
+                    `${name} ${((percent ?? 0) * 100).toFixed(0)}%`
                   }
                 >
                   {orderStatusData.map((entry, index) => (

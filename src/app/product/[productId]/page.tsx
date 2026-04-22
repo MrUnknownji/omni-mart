@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, use } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import {
@@ -18,11 +18,12 @@ import { CartItem, Product } from "@/lib/types";
 import Footer from "../../components/footer";
 import NavBar from "../../components/navbar";
 
-export default function EnhancedProductDetail({
-  params,
-}: {
-  params: { productId: string };
-}) {
+export default function EnhancedProductDetail(
+  props: {
+    params: Promise<{ productId: string }>;
+  }
+) {
+  const params = use(props.params);
   const router = useRouter();
   const { toast } = useToast();
   const { products, setCart, isLoggedIn } = useGlobalData();

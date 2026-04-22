@@ -41,8 +41,9 @@ const ordersData = [
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
     return (
-      <div className="bg-white p-2 border border-gray-300 rounded shadow">
-        <p className="text-sm text-gray-600">{`${label} : ${payload[0].value}`}</p>
+      <div className="bg-background border border-border/50 p-3 shadow-xl backdrop-blur-md">
+        <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">{label}</p>
+        <p className="text-sm font-mono font-bold">{payload[0].value.toLocaleString()}</p>
       </div>
     );
   }
@@ -61,14 +62,14 @@ export default function AdminDashboard() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="container py-6 px-4 sm:px-6 lg:px-8">
+    <div className="bg-background">
+      <div className="w-full space-y-8">
         <Tabs
           value={activeTab}
           onValueChange={setActiveTab}
-          className="space-y-4"
+          className="space-y-8"
         >
-          <TabsList className="flex flex-wrap justify-start gap-2 sm:w-fit w-full">
+          <TabsList className="flex flex-wrap h-auto p-1 bg-muted/30 border border-border/40 sm:w-fit w-full">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="analytics">Analytics</TabsTrigger>
             <TabsTrigger value="reports">Reports</TabsTrigger>
