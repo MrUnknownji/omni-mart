@@ -15,6 +15,7 @@ export interface IProduct extends Document {
   rating: number;
   reviewCount: number;
   status: "Active" | "Draft" | "Archived";
+  embedding?: number[];
   createdAt: Date;
   updatedAt: Date;
 }
@@ -39,6 +40,7 @@ const ProductSchema: Schema = new Schema(
       enum: ["Active", "Draft", "Archived"],
       default: "Active",
     },
+    embedding: { type: [Number], default: [] },
   },
   { timestamps: true }
 );

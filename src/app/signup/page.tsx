@@ -63,7 +63,7 @@ const SignUp = () => {
               email,
               password,
             };
-        const result = await request(
+        const result = await request<{ token: string }>(
           "https://localhost:7149/api/auth/register",
           {
             method: "POST",

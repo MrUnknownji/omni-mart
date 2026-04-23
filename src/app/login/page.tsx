@@ -72,7 +72,7 @@ export default function Login() {
       }
 
       try {
-        const result = await request("/api/auth/login", {
+        const result = await request<{ token: string }>("/api/auth/login", {
           method: "POST",
           body: { email, password },
         });

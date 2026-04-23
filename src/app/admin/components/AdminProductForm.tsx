@@ -59,10 +59,15 @@ export default function AdminProductForm({
   });
 
   useEffect(() => {
-    if (productId) {
+    if (productId && products.length > 0) {
       const existingProduct = products.find((p) => p.productId === productId);
       if (existingProduct) {
-        setProduct(existingProduct);
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setProduct((prev) => {
+          // Only update if the productId has changed to avoid loop
+          if (prev.productId === productId) return prev;
+          return existingProduct;
+        });
       }
     }
   }, [productId, products]);
@@ -118,6 +123,39 @@ export default function AdminProductForm({
     }));
   };
 
+  const handleAIGenerate = async () => {
+    if (!product.title && !product.image) {
+      setError("Please provide at least a title or an image to generate data.");
+      return;
+    }
+
+    setIsLoading(true);
+    setError(null);
+    try {
+      const response = await fetch("/api/admin/generate-product", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title: product.title, image: product.image }),
+      });
+      const data = await response.json();
+      if (data.error) throw new Error(data.error);
+
+      setProduct((prev) => ({
+        ...prev,
+        title: data.title || prev.title,
+        description: data.description || prev.description,
+        price: data.price || prev.price,
+        category: data.category || prev.category,
+        brand: data.brand || prev.brand,
+      }));
+      setSuccess("AI has generated your product details!");
+    } catch (err) {
+      setError("AI generation failed. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
@@ -155,7 +193,19 @@ export default function AdminProductForm({
           <CardContent className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
-                <Label htmlFor="title">Product Title</Label>
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="title">Product Title</Label>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={handleAIGenerate}
+                    disabled={isLoading}
+                    className="h-8 text-xs bg-gold/10 hover:bg-gold/20 border-gold/30 text-gold-foreground"
+                  >
+                    ✨ AI Magic Fill
+                  </Button>
+                </div>
                 <Input
                   id="title"
                   name="title"

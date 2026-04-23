@@ -3,7 +3,7 @@ import { Copy, Minus, Plus, Trash, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useGlobalData } from "@/app/Context/GlobalData";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { CartItem } from "@/lib/types";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
@@ -11,9 +11,14 @@ import Image from "next/image";
 export function UserCart({ searchTerm }: { searchTerm: string }) {
   const { cart, setCart, user } = useGlobalData();
   const [cartItems, setCartItems] = useState(cart);
-  const [filteredCartItems, setFilteredCartItems] = useState(cartItems);
 
   const router = useRouter();
+
+  const filteredCartItems = useMemo(() => {
+    return cartItems.filter((item) =>
+      item.title.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }, [searchTerm, cartItems]);
 
   const handleQuantityChange = (index: number, change: number) => {
     const updatedCart = cartItems.map((item, i) =>
@@ -42,14 +47,6 @@ export function UserCart({ searchTerm }: { searchTerm: string }) {
     setCartItems(updatedCart);
     setCart(updatedCart);
   };
-
-  useEffect(() => {
-    setFilteredCartItems(
-      cartItems.filter((item) =>
-        item.title.toLowerCase().includes(searchTerm.toLowerCase())
-      )
-    );
-  }, [searchTerm, cartItems]);
 
   return (
     <div className="flex flex-col lg:flex-row gap-12 items-start">

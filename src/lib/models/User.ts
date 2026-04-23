@@ -1,5 +1,7 @@
 import mongoose, { Document, Model, Schema } from "mongoose";
 
+import { Address } from "../types";
+
 export interface IUser extends Document {
   userId: string;
   firstName: string;
@@ -7,7 +9,7 @@ export interface IUser extends Document {
   email: string;
   password?: string;
   profileImage?: string;
-  address?: any;
+  address?: Address;
   phone?: string;
   cartId?: string;
   role: string;

@@ -23,7 +23,7 @@ import { Textarea } from "@/components/ui/textarea";
 export function CreateTicketDialog() {
   const [open, setOpen] = useState(false);
 
-  const handleSubmit = (event: any) => {
+  const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     // Handle form submission logic here
     console.log("Ticket submitted");

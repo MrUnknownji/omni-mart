@@ -5,11 +5,11 @@ type HttpMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
 
 interface RequestOptions extends Omit<AxiosRequestConfig, "url" | "method"> {
   method?: HttpMethod;
-  body?: any;
+  body?: unknown;
 }
 
 interface ApiHook {
-  request: <T = any>(url: string, options?: RequestOptions) => Promise<T>;
+  request: <T>(url: string, options?: RequestOptions) => Promise<T>;
   loading: boolean;
   error: string | null;
 }
@@ -19,7 +19,7 @@ const useApi = (): ApiHook => {
   const [error, setError] = useState<string | null>(null);
 
   const request = useCallback(
-    async <T = any>(
+    async <T>(
       url: string,
       { method = "GET", body, ...options }: RequestOptions = {}
     ): Promise<T> => {

@@ -53,6 +53,7 @@ export interface Product {
   rating: number;
   reviewCount: number;
   status: ProductStatus;
+  embedding?: number[];
   createdAt: Date;
   updatedAt: Date;
 }
@@ -119,6 +120,7 @@ export interface Review {
   reviewId: string;
   productId: string;
   userId: string;
+  userName: string;
   rating: number;
   comment: string;
   createdAt: Date;

@@ -20,7 +20,7 @@ export default function ProfilePage() {
   const { user, orders, setIsLoggedIn } = useGlobalData();
   const router = useRouter();
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setIsEditing(false);
   };

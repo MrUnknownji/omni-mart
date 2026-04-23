@@ -63,6 +63,7 @@ export default function Carousel() {
 
   // Progress bar
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setProgress(0);
     const start = Date.now();
     const tick = () => {

@@ -1,4 +1,5 @@
 "use client";
+import { useMemo } from "react";
 import { ChevronLeft, Package, Truck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -31,26 +32,20 @@ export default function OrderDetailPage(
   }
 ) {
   const params = use(props.params);
-  const [order, setOrder] = useState<Order>({} as Order);
   const { orders, user } = useGlobalData();
-  const [orderItems, setOrderItems] = useState<OrderItem[]>([]);
   const router = useRouter();
 
-  useEffect(() => {
-    if (!orders.length) return;
-    const found = orders.find((o) => o.orderId === params.orderItemId);
-    if (found) {
-      setOrder(found);
-    } else {
-      router.push("/404");
-    }
-  }, [orders, router, params.orderItemId]);
+  const order = useMemo(() => {
+    return orders.find((o) => o.orderId === params.orderItemId) || {} as Order;
+  }, [orders, params.orderItemId]);
+
+  const orderItems = order.items || [];
 
   useEffect(() => {
-    if (order.items?.length) {
-      setOrderItems(order.items);
+    if (orders.length > 0 && (!order || !order.orderId)) {
+      router.push("/404");
     }
-  }, [order]);
+  }, [orders, order, router]);
 
   return (
     <>

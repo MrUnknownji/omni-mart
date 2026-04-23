@@ -4,14 +4,21 @@ import { getServerConfig } from "./config";
 // Disable strict query warning
 mongoose.set("strictQuery", false);
 
-// Global is used here to maintain a cached connection across hot reloads in development.
-let cached = (global as any).mongoose;
-
-if (!cached) {
-  cached = (global as any).mongoose = { conn: null, promise: null };
+declare global {
+  var mongoose: {
+    conn: typeof import("mongoose") | null;
+    promise: Promise<typeof import("mongoose")> | null;
+  } | undefined;
 }
 
-async function dbConnect() {
+// Global is used here to maintain a cached connection across hot reloads in development.
+let cached = global.mongoose;
+
+export async function dbConnect() {
+  if (!cached) {
+    cached = global.mongoose = { conn: null, promise: null };
+  }
+
   if (cached.conn) {
     return cached.conn;
   }

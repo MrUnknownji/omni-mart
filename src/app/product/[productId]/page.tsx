@@ -17,6 +17,8 @@ import { useToast } from "@/components/ui/use-toast";
 import { CartItem, Product } from "@/lib/types";
 import Footer from "../../components/footer";
 import NavBar from "../../components/navbar";
+import ReviewSection from "../../components/review-section";
+import Recommendations from "../../components/recommendations";
 
 export default function EnhancedProductDetail(
   props: {
@@ -28,17 +30,13 @@ export default function EnhancedProductDetail(
   const { toast } = useToast();
   const { products, setCart, isLoggedIn } = useGlobalData();
   const [quantity, setQuantity] = useState(1);
-  const [product, setProduct] = useState<Product | null>(null);
+  const product = products.find((p) => p.productId === params.productId) || null;
 
   useEffect(() => {
-    if (!products.length) return;
-    const foundProduct = products.find((p) => p.productId === params.productId);
-    if (foundProduct) {
-      setProduct(foundProduct);
-    } else {
+    if (products.length > 0 && !product) {
       router.push("/404");
     }
-  }, [products, params.productId, router]);
+  }, [products, product, router]);
 
   if (!product) return null;
 
@@ -140,14 +138,14 @@ export default function EnhancedProductDetail(
                       key={i}
                       className={`h-4 w-4 ${
                         i < 5
-                          ? "text-foreground fill-foreground"
+                          ? "text-gold fill-gold"
                           : "text-muted"
                       }`}
                     />
                   ))}
                 </div>
                 <span className="ml-3 text-sm tracking-wide text-muted-foreground">
-                  (123 reviews)
+                  ({product.reviewCount} reviews)
                 </span>
               </div>
 
@@ -180,7 +178,7 @@ export default function EnhancedProductDetail(
 
                 <div className="flex flex-col gap-4">
                   <Button
-                    className="w-full h-14 text-sm font-medium tracking-widest uppercase bg-foreground text-background hover:bg-foreground/90 transition-all"
+                    className="w-full h-14 text-sm font-medium tracking-widest uppercase bg-foreground text-background hover:bg-gold hover:text-white transition-all"
                     onClick={handleAddToCart}
                   >
                     Add to Cart
@@ -215,6 +213,10 @@ export default function EnhancedProductDetail(
             </div>
           </div>
         </div>
+
+        <ReviewSection productId={product.productId} />
+        
+        <Recommendations title="You May Also Like" />
       </main>
       <Footer />
     </div>

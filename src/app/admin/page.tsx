@@ -38,7 +38,13 @@ const ordersData = [
   { day: "Sun", orders: 18 },
 ];
 
-const CustomTooltip = ({ active, payload, label }: any) => {
+interface CustomTooltipProps {
+  active?: boolean;
+  payload?: Array<{ value: number }>;
+  label?: string;
+}
+
+const CustomTooltip = ({ active, payload, label }: CustomTooltipProps) => {
   if (active && payload && payload.length) {
     return (
       <div className="bg-background border border-border/50 p-3 shadow-xl backdrop-blur-md">
@@ -272,6 +278,7 @@ const RandomAmount = () => {
   const [number, setNumber] = useState("");
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setNumber((Math.random() * 100).toFixed(2));
   }, []);
 

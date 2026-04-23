@@ -8,6 +8,7 @@ import { useGlobalData } from "./Context/GlobalData";
 import { ArrowRight, Zap, Shield, Truck, RotateCcw } from "lucide-react";
 import Link from "next/link";
 import NextImage from "next/image";
+import { Product } from "@/lib/types";
 
 // Hook for intersection observer
 function useReveal(threshold = 0.15) {
@@ -78,15 +79,47 @@ function MarqueeBar() {
 export default function Home() {
   const { products, user, isLoggedIn } = useGlobalData();
   const [searchTerm, setSearchTerm] = useState("");
-  const filteredProducts = products.filter((product) =>
-    product.title.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const [semanticResults, setSemanticResults] = useState<Product[]>([]);
+  const [isSearching, setIsSearching] = useState(false);
 
-  const heroReveal = useReveal();
-  const catReveal = useReveal();
-  const prodReveal = useReveal();
-  const testimonialReveal = useReveal();
-  const promisesReveal = useReveal();
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(async () => {
+      if (searchTerm.length > 3) {
+        setIsSearching(true);
+        try {
+          const response = await fetch("/api/search/semantic", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ query: searchTerm }),
+          });
+          const data = await response.json();
+          if (data.results) {
+            setSemanticResults(data.results);
+          }
+        } catch (error) {
+          console.error("Semantic search failed:", error);
+        } finally {
+          setIsSearching(false);
+        }
+      } else {
+        setSemanticResults([]);
+      }
+    }, 500);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [searchTerm]);
+
+  const filteredProducts = searchTerm.length > 3 && semanticResults.length > 0
+    ? semanticResults
+    : products.filter((product) =>
+        product.title.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+
+  const { ref: heroRef, visible: heroVisible } = useReveal();
+  const { ref: catRef, visible: catVisible } = useReveal();
+  const { ref: prodRef, visible: prodVisible } = useReveal();
+  const { ref: testimonialRef, visible: testimonialVisible } = useReveal();
+  const { ref: promisesRef, visible: promisesVisible } = useReveal();
 
   const [activeTestimonial, setActiveTestimonial] = useState(0);
 
@@ -115,8 +148,8 @@ export default function Home() {
         {/* Category Showcase */}
         <section className="max-w-[1440px] mx-auto px-6 lg:px-16 py-24 lg:py-32">
           <div
-            ref={catReveal.ref}
-            className={`transition-all duration-800 ${catReveal.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
+            ref={catRef}
+            className={`transition-all duration-800 ${catVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
           >
             {/* Section Header */}
             <div className="flex items-end justify-between mb-16">
@@ -149,8 +182,8 @@ export default function Home() {
                   className="group relative cursor-pointer overflow-hidden border border-border/40 hover:border-gold/40 transition-all duration-500"
                   style={{
                     transitionDelay: `${i * 60}ms`,
-                    opacity: catReveal.visible ? 1 : 0,
-                    transform: catReveal.visible ? "translateY(0)" : "translateY(20px)",
+                    opacity: catVisible ? 1 : 0,
+                    transform: catVisible ? "translateY(0)" : "translateY(20px)",
                     transition: `opacity 0.6s ${i * 0.06}s, transform 0.6s ${i * 0.06}s, border-color 0.3s`,
                   }}
                   id={`category-${cat.name.toLowerCase()}`}
@@ -177,11 +210,11 @@ export default function Home() {
 
         {/* Products Grid */}
         <section id="collection" className="max-w-[1440px] mx-auto px-6 lg:px-16 pb-24 lg:pb-32">
-          <div ref={prodReveal.ref}>
+          <div ref={prodRef}>
             {/* Section Header */}
             <div
               className={`flex flex-col md:flex-row md:items-end justify-between mb-16 transition-all duration-700 ${
-                prodReveal.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                prodVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
               }`}
             >
               <div>
@@ -204,7 +237,14 @@ export default function Home() {
               </p>
             </div>
 
-            {filteredProducts.length > 0 ? (
+            {isSearching ? (
+              <div className="py-24 text-center">
+                 <div className="inline-block w-8 h-8 border-2 border-gold border-t-transparent rounded-full animate-spin mb-4" />
+                 <p className="font-display text-xl text-muted-foreground font-light">
+                   AI is analyzing your request...
+                 </p>
+              </div>
+            ) : filteredProducts.length > 0 ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-16">
                 {filteredProducts.map((product, i) => (
                   <ProductCard key={product.productId} product={product} index={i} />
@@ -223,7 +263,7 @@ export default function Home() {
         {/* Brand Promises */}
         <section className="border-y border-border/30 bg-card/30">
           <div
-            ref={promisesReveal.ref}
+            ref={promisesRef}
             className="max-w-[1440px] mx-auto px-6 lg:px-16 py-16 lg:py-20 grid grid-cols-2 lg:grid-cols-4 gap-8"
           >
             {promises.map((p, i) => (
@@ -231,8 +271,8 @@ export default function Home() {
                 key={p.label}
                 className="flex flex-col items-center text-center gap-4"
                 style={{
-                  opacity: promisesReveal.visible ? 1 : 0,
-                  transform: promisesReveal.visible ? "translateY(0)" : "translateY(20px)",
+                  opacity: promisesVisible ? 1 : 0,
+                  transform: promisesVisible ? "translateY(0)" : "translateY(20px)",
                   transition: `opacity 0.6s ${i * 0.1}s, transform 0.6s ${i * 0.1}s`,
                 }}
               >
@@ -251,9 +291,9 @@ export default function Home() {
         {/* Editorial Feature Section */}
         <section className="max-w-[1440px] mx-auto px-6 lg:px-16 py-24 lg:py-32">
           <div
-            ref={heroReveal.ref}
+            ref={heroRef}
             className={`grid lg:grid-cols-2 gap-16 items-center transition-all duration-800 ${
-              heroReveal.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+              heroVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
             }`}
           >
             {/* Text */}
@@ -335,7 +375,7 @@ export default function Home() {
         {/* Testimonials */}
         <section className="bg-zinc-950 text-zinc-50 py-24 lg:py-32 overflow-hidden">
           <div
-            ref={testimonialReveal.ref}
+            ref={testimonialRef}
             className="max-w-[1440px] mx-auto px-6 lg:px-16"
           >
             <div className="text-center mb-16">
@@ -365,7 +405,7 @@ export default function Home() {
                   }}
                 >
                   <p className="font-display text-2xl lg:text-3xl text-white/90 italic leading-relaxed mb-8">
-                    "{t.quote}"
+                    &ldquo;{t.quote}&rdquo;
                   </p>
                   <div className="flex items-center justify-center gap-3">
                     <div className="w-12 h-px bg-gold" />

@@ -117,10 +117,19 @@ const ChartTooltipContent = React.forwardRef<
       nameKey?: string
       labelKey?: string
       active?: boolean
-      payload?: any[]
-      label?: any
-      labelFormatter?: (value: any, payload: any[]) => React.ReactNode
-      formatter?: (value: any, name: any, item: any, index: number, payload: any) => React.ReactNode
+      payload?: Payload<ValueType, NameType>[]
+      label?: React.ReactNode
+      labelFormatter?: (
+        value: string | number,
+        payload: Payload<ValueType, NameType>[]
+      ) => React.ReactNode
+      formatter?: (
+        value: ValueType,
+        name: NameType,
+        item: Payload<ValueType, NameType>,
+        index: number,
+        payload: Payload<ValueType, NameType>[]
+      ) => React.ReactNode
       color?: string
       labelClassName?: string
     }
@@ -204,7 +213,7 @@ const ChartTooltipContent = React.forwardRef<
 
             return (
               <div
-                key={item.dataKey}
+                key={index}
                 className={cn(
                   "flex w-full flex-wrap items-stretch gap-2 [&>svg]:h-2.5 [&>svg]:w-2.5 [&>svg]:text-muted-foreground",
                   indicator === "dot" && "items-center"
@@ -273,7 +282,7 @@ const ChartLegend = RechartsPrimitive.Legend
 const ChartLegendContent = React.forwardRef<
   HTMLDivElement,
   React.ComponentProps<"div"> & {
-    payload?: any[]
+    payload?: Payload<ValueType, NameType>[]
     verticalAlign?: "top" | "middle" | "bottom"
     hideIcon?: boolean
     nameKey?: string
@@ -298,13 +307,13 @@ const ChartLegendContent = React.forwardRef<
           className
         )}
       >
-        {payload.map((item) => {
+        {payload.map((item, index) => {
           const key = `${nameKey || item.dataKey || "value"}`
           const itemConfig = getPayloadConfigFromPayload(config, item, key)
 
           return (
             <div
-              key={item.value}
+              key={index}
               className={cn(
                 "flex items-center gap-1.5 [&>svg]:h-3 [&>svg]:w-3 [&>svg]:text-muted-foreground"
               )}
