@@ -429,18 +429,18 @@ export const dummyCoupons: Coupon[] = [
 
 export const dummySlideContents: SlideContent[] = [
   {
-    title: "Elevate Your Lifestyle",
-    subtitle: "Discover premium products for the discerning shopper",
-    imageSrc: "/images/cms-tEuAQua5a4aZ7fOAiw.webp",
+    title: "The Apex Collection",
+    subtitle: "Luxury technology, effortlessly elevated",
+    imageSrc: "/images/hero-1.png",
   },
   {
-    title: "Shop 'Til You Drop",
-    subtitle: "Endless choices, unbeatable deals, delivered to your door",
-    imageSrc: "/images/GettyImages-1177004878.jpg",
+    title: "Curated for the Discerning",
+    subtitle: "Precision crafted essentials for modern living",
+    imageSrc: "/images/hero-2.png",
   },
   {
-    title: "Your One-Stop Shop",
-    subtitle: "From essentials to indulgences, we've got you covered",
-    imageSrc: "/images/grocery_cart.m3-w800-16-9.jpg",
+    title: "Crafted with Precision",
+    subtitle: "Where innovation meets timeless sophistication",
+    imageSrc: "/images/hero-3.png",
   },
 ];
