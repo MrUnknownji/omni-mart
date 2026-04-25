@@ -29,6 +29,7 @@ const slides = [
 ];
 
 export default function Carousel() {
+  const { isLoggedIn } = useGlobalData();
   const [activeIndex, setActiveIndex] = useState(0);
   const [animating, setAnimating] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -146,7 +147,10 @@ export default function Carousel() {
             style={{ animation: "fade-up 0.7s 0.45s cubic-bezier(0.16,1,0.3,1) both" }}
           >
             <button
-              onClick={() => router.push("/")}
+              onClick={() => {
+                document.getElementById("collection")?.scrollIntoView({ behavior: "smooth" });
+                router.push("/#collection");
+              }}
               id="hero-cta-btn"
               className="group relative inline-flex items-center gap-4 bg-white text-black px-8 py-4 font-body text-xs tracking-[0.2em] uppercase font-medium overflow-hidden transition-all duration-300 hover:bg-gold hover:text-white dark:bg-zinc-900 dark:text-white dark:hover:bg-gold"
             >
@@ -154,13 +158,15 @@ export default function Carousel() {
               <span className="relative z-10 w-8 h-px bg-current inline-block group-hover:w-12 transition-all duration-300" />
             </button>
 
-            <button
-              onClick={() => router.push("/login")}
-              className="font-body text-xs tracking-[0.2em] uppercase text-white/60 hover:text-white transition-colors duration-300 flex items-center gap-3"
-            >
-              <span className="w-4 h-px bg-current" />
-              Sign In
-            </button>
+            {!isLoggedIn && (
+              <button
+                onClick={() => router.push("/login")}
+                className="font-body text-xs tracking-[0.2em] uppercase text-white/60 hover:text-white transition-colors duration-300 flex items-center gap-3"
+              >
+                <span className="w-4 h-px bg-current" />
+                Sign In
+              </button>
+            )}
           </div>
         </div>
 

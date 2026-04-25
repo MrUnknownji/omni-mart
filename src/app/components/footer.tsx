@@ -10,7 +10,7 @@ const Footer = () => {
       {/* Main Footer Content */}
       <div className="max-w-[1440px] mx-auto px-6 lg:px-16 pt-20 pb-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-16 mb-16">
-          
+
           {/* Brand Column */}
           <div className="lg:col-span-2">
             <div className="flex items-center gap-3 mb-6">
@@ -53,14 +53,21 @@ const Footer = () => {
               Shop
             </p>
             <ul className="flex flex-col gap-3">
-              {["New Arrivals", "Electronics", "Accessories", "Smartwatches", "Laptops", "Sale"].map((item) => (
-                <li key={item}>
+              {[
+                { label: "New Arrivals", href: "/#collection" },
+                { label: "Electronics", href: "/?category=Electronics#collection" },
+                { label: "Accessories", href: "/?category=Accessories#collection" },
+                { label: "Smartwatches", href: "/?category=Smartwatch#collection" },
+                { label: "Laptops", href: "/?category=Laptop#collection" },
+                { label: "Sale", href: "/#collection" }
+              ].map((item) => (
+                <li key={item.label}>
                   <Link
-                    href="/"
+                    href={item.href}
                     className="font-body text-sm text-white/50 hover:text-white transition-colors duration-300 tracking-wide flex items-center gap-2 group"
                   >
                     <span className="w-0 h-px bg-gold group-hover:w-3 transition-all duration-300 inline-block" />
-                    {item}
+                    {item.label}
                   </Link>
                 </li>
               ))}
@@ -73,6 +80,7 @@ const Footer = () => {
             </p>
             <ul className="flex flex-col gap-3">
               {[
+                { label: "About Us", href: "/about" },
                 { label: "Privacy Policy", href: "/privacy" },
                 { label: "Terms of Service", href: "/terms" },
                 { label: "Shipping Policy", href: "/shipping" },
@@ -102,13 +110,15 @@ const Footer = () => {
           {/* Social Links */}
           <div className="flex items-center gap-5">
             {[
-              { icon: Globe, href: "#", label: "Website" },
-              { icon: Share2, href: "#", label: "Social" },
-              { icon: Play, href: "#", label: "Videos" },
+              { icon: Globe, href: "https://omni-mart-orpin.vercel.app/", label: "Website" },
+              { icon: Share2, href: "https://twitter.com/MrUnknownG786", label: "Social" },
+              { icon: Play, href: "https://www.youtube.com/@cruxlog", label: "Videos" },
             ].map(({ icon: Icon, href, label }) => (
               <a
                 key={label}
                 href={href}
+                target="_blank"
+                rel="noopener noreferrer"
                 aria-label={label}
                 className="w-8 h-8 border border-white/10 flex items-center justify-center text-white/40 hover:border-gold/40 hover:text-gold transition-all duration-300"
               >

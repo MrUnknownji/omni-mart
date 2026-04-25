@@ -19,7 +19,7 @@ export default function ProductCard({ product, className, index = 0 }: ProductCa
   const { cart, setCart, isLoggedIn } = useGlobalData();
   const { toast } = useToast();
   const router = useRouter();
-  const cardRef = useRef<HTMLDivElement>(null);
+  const cardRef = useRef<HTMLAnchorElement>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [wished, setWished] = useState(false);
 
@@ -73,10 +73,11 @@ export default function ProductCard({ product, className, index = 0 }: ProductCa
   const inCart = cart.some((item) => item.productId === product.productId);
 
   return (
-    <div
+    <Link
+      href={`/product/${product.productId}`}
       ref={cardRef}
       className={cn(
-        "group relative flex flex-col",
+        "group relative flex flex-col cursor-pointer",
         "transition-all duration-700",
         isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10",
         className
@@ -88,15 +89,6 @@ export default function ProductCard({ product, className, index = 0 }: ProductCa
         className="relative overflow-hidden bg-muted/20"
         style={{ aspectRatio: "4/5" }}
       >
-        {/* Transparent navigation overlay (behind interactive elements) */}
-        <Link
-          href={`/product/${product.productId}`}
-          className="absolute inset-0 z-10"
-          id={`product-card-${product.productId}`}
-          tabIndex={-1}
-          aria-hidden
-        />
-
         <NextImage
           src={product.image}
           alt={product.title}
@@ -118,7 +110,11 @@ export default function ProductCard({ product, className, index = 0 }: ProductCa
         {/* Wishlist button */}
         <button
           className="absolute top-3 right-3 w-8 h-8 flex items-center justify-center bg-background/80 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-gold hover:text-white z-20"
-          onClick={(e) => { e.stopPropagation(); setWished(!wished); }}
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            setWished(!wished);
+          }}
           id={`wishlist-${product.productId}`}
         >
           <Heart className={cn("w-3.5 h-3.5 transition-colors", wished ? "fill-gold text-gold" : "")} />
@@ -136,7 +132,11 @@ export default function ProductCard({ product, className, index = 0 }: ProductCa
           </button>
           <button
             className="w-12 h-12 bg-black/80 backdrop-blur-sm text-white flex items-center justify-center hover:bg-gold transition-colors duration-300"
-            onClick={() => router.push(`/product/${product.productId}`)}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              router.push(`/product/${product.productId}`);
+            }}
             id={`view-product-${product.productId}`}
           >
             <Eye className="w-3.5 h-3.5" />
@@ -152,11 +152,9 @@ export default function ProductCard({ product, className, index = 0 }: ProductCa
         </span>
 
         {/* Title */}
-        <Link href={`/product/${product.productId}`}>
-          <h3 className="font-display text-base leading-snug text-foreground group-hover:text-gold transition-colors duration-300 line-clamp-2">
-            {product.title}
-          </h3>
-        </Link>
+        <h3 className="font-display text-base leading-snug text-foreground group-hover:text-gold transition-colors duration-300 line-clamp-2">
+          {product.title}
+        </h3>
 
         {/* Price Row */}
         <div className="flex items-center gap-3 mt-1">
@@ -194,6 +192,7 @@ export default function ProductCard({ product, className, index = 0 }: ProductCa
           </div>
         )}
       </div>
-    </div>
+    </Link>
+
   );
 }

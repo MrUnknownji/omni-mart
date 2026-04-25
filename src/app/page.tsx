@@ -9,6 +9,9 @@ import { ArrowRight, Zap, Shield, Truck, RotateCcw } from "lucide-react";
 import Link from "next/link";
 import NextImage from "next/image";
 import { Product } from "@/lib/types";
+import { cn } from "@/lib/utils";
+import { useSearchParams, useRouter } from "next/navigation";
+import { Suspense } from "react";
 
 // Hook for intersection observer
 function useReveal(threshold = 0.15) {
@@ -29,9 +32,9 @@ function useReveal(threshold = 0.15) {
 
 const categories = [
   { name: "Electronics", count: "24 Pieces", tag: "01" },
-  { name: "Smartwatches", count: "12 Pieces", tag: "02" },
-  { name: "Laptops", count: "18 Pieces", tag: "03" },
-  { name: "Gaming", count: "9 Pieces", tag: "04" },
+  { name: "Smartwatch", count: "12 Pieces", tag: "02" },
+  { name: "Laptop", count: "18 Pieces", tag: "03" },
+  { name: "Gaming Console", count: "9 Pieces", tag: "04" },
 ];
 
 const promises = [
@@ -76,11 +79,24 @@ function MarqueeBar() {
   );
 }
 
-export default function Home() {
+function HomeContent() {
   const { products, user, isLoggedIn } = useGlobalData();
   const [searchTerm, setSearchTerm] = useState("");
   const [semanticResults, setSemanticResults] = useState<Product[]>([]);
   const [isSearching, setIsSearching] = useState(false);
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const selectedCategory = searchParams.get("category");
+
+  useEffect(() => {
+    if (selectedCategory || window.location.hash === "#collection") {
+      const timer = setTimeout(() => {
+        const el = document.getElementById("collection");
+        if (el) el.scrollIntoView({ behavior: "smooth" });
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [selectedCategory]);
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(async () => {
@@ -109,10 +125,12 @@ export default function Home() {
     return () => clearTimeout(delayDebounceFn);
   }, [searchTerm]);
 
-  const filteredProducts = searchTerm.length > 3 && semanticResults.length > 0
+  const filteredProducts = (searchTerm.length > 3 && semanticResults.length > 0
     ? semanticResults
     : products.filter((product) =>
         product.title.toLowerCase().includes(searchTerm.toLowerCase())
+      )).filter((product) => 
+        !selectedCategory || product.category === selectedCategory
       );
 
   const { ref: heroRef, visible: heroVisible } = useReveal();
@@ -165,13 +183,16 @@ export default function Home() {
                   <em className="not-italic text-muted-foreground">Collection</em>
                 </h2>
               </div>
-              <Link
-                href="/"
+              <button
+                onClick={() => {
+                  router.push("/#collection");
+                  document.getElementById("collection")?.scrollIntoView({ behavior: "smooth" });
+                }}
                 className="hidden md:flex items-center gap-3 font-body text-xs tracking-[0.2em] uppercase text-muted-foreground hover:text-foreground transition-colors group"
               >
                 View All
                 <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
-              </Link>
+              </button>
             </div>
 
             {/* Category Grid */}
@@ -179,7 +200,14 @@ export default function Home() {
               {categories.map((cat, i) => (
                 <div
                   key={cat.name}
-                  className="group relative cursor-pointer overflow-hidden border border-border/40 hover:border-gold/40 transition-all duration-500"
+                  onClick={() => {
+                    router.push(`/?category=${cat.name}#collection`);
+                    document.getElementById("collection")?.scrollIntoView({ behavior: "smooth" });
+                  }}
+                  className={cn(
+                    "group relative cursor-pointer overflow-hidden border transition-all duration-500",
+                    selectedCategory === cat.name ? "border-gold bg-gold/5" : "border-border/40 hover:border-gold/40"
+                  )}
                   style={{
                     transitionDelay: `${i * 60}ms`,
                     opacity: catVisible ? 1 : 0,
@@ -193,14 +221,20 @@ export default function Home() {
                       {cat.tag}
                     </span>
                     <div>
-                      <h3 className="font-display text-2xl lg:text-3xl text-foreground mb-1 group-hover:text-gold transition-colors duration-300">
+                      <h3 className={cn(
+                        "font-display text-2xl lg:text-3xl transition-colors duration-300 mb-1",
+                        selectedCategory === cat.name ? "text-gold" : "text-foreground group-hover:text-gold"
+                      )}>
                         {cat.name}
                       </h3>
                       <p className="font-body text-xs tracking-[0.15em] uppercase text-muted-foreground">
                         {cat.count}
                       </p>
                     </div>
-                    <div className="w-0 h-px bg-gold group-hover:w-8 transition-all duration-400" />
+                    <div className={cn(
+                      "h-px bg-gold transition-all duration-400",
+                      selectedCategory === cat.name ? "w-8" : "w-0 group-hover:w-8"
+                    )} />
                   </div>
                 </div>
               ))}
@@ -328,7 +362,7 @@ export default function Home() {
                 ))}
               </div>
               <Link
-                href="/"
+                href="/about"
                 className="inline-flex items-center gap-4 font-body text-xs tracking-[0.2em] uppercase text-foreground border border-foreground px-8 py-4 hover:bg-gold hover:text-white hover:border-gold transition-all duration-300 group"
                 id="about-cta-btn"
               >
@@ -447,28 +481,38 @@ export default function Home() {
                 <em className="not-italic text-muted-foreground">Member Benefits</em>
               </h2>
             </div>
-            <div className="flex flex-col sm:flex-row gap-4 shrink-0">
-              <Link
-                href="/signup"
-                id="cta-join-btn"
-                className="inline-flex items-center justify-center gap-4 font-body text-xs tracking-[0.2em] uppercase bg-zinc-950 text-white px-10 py-4 hover:bg-gold hover:text-white transition-all duration-300"
-              >
-                Join Now
-                <ArrowRight className="w-3 h-3" />
-              </Link>
-              <Link
-                href="/login"
-                id="cta-signin-btn"
-                className="inline-flex items-center justify-center gap-4 font-body text-xs tracking-[0.2em] uppercase border border-border px-10 py-4 hover:border-foreground transition-all duration-300"
-              >
-                Sign In
-              </Link>
-            </div>
+            {!isLoggedIn && (
+              <div className="flex flex-col sm:flex-row gap-4 shrink-0 relative z-30">
+                <button
+                  onClick={() => router.push("/signup")}
+                  id="cta-join-btn"
+                  className="inline-flex items-center justify-center gap-4 font-body text-xs tracking-[0.2em] uppercase bg-zinc-950 text-white px-10 py-4 hover:bg-gold hover:text-white transition-all duration-300 cursor-pointer"
+                >
+                  Join Now
+                  <ArrowRight className="w-3 h-3" />
+                </button>
+                <button
+                  onClick={() => router.push("/login")}
+                  id="cta-signin-btn"
+                  className="inline-flex items-center justify-center gap-4 font-body text-xs tracking-[0.2em] uppercase border border-border px-10 py-4 hover:border-foreground transition-all duration-300 cursor-pointer"
+                >
+                  Sign In
+                </button>
+              </div>
+            )}
           </div>
         </section>
       </main>
 
       <Footer />
     </div>
+  );
+}
+
+export default function Home() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-background flex items-center justify-center"><div className="w-8 h-8 border-2 border-gold border-t-transparent rounded-full animate-spin" /></div>}>
+      <HomeContent />
+    </Suspense>
   );
 }
